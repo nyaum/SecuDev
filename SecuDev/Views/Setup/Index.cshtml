@@ -1,0 +1,48 @@
+﻿
+<script>
+
+    $().ready(function () {
+
+        $("#confirm").on("click", function(){
+            var Param = "DBHost=" + $("#DBHost").val() + "&User=" + $("#User").val() + "&Password=" + $("#Password").val() + "&DBName=" + $("#DBName").val() + "&Port=" + $("#Port").val();
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: "/SetUp/Conn",
+                data: Param,
+                success: function (data) {
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "text",
+                        url: "/SetUp/FileCreate",
+                        data: Param,
+                        success: function (data) {
+
+                        }
+                    });
+
+                }
+            });
+        })
+
+    })
+
+</script>
+
+<label>DBHsot</label>
+<input type="text" class="form-control" id="DBHost" value="127.0.0.1" />
+
+<label>Port</label>
+<input type="text" class="form-control" id="Port" value="1433" readonly/>
+
+<label>DBName</label>
+<input type="text" class="form-control" id="DBName" value="NavyWork"/>
+
+<label>User</label>
+<input type="text" class="form-control" id="User" value="sa"/>
+
+<label>Password</label>
+<input type="text" class="form-control" id="Password" value="s1access!"/>
+
+<button type="button" id="confirm" class="btn btn-info">저장</button>
