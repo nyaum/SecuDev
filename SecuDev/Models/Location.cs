@@ -7,6 +7,7 @@ namespace SecuDev.Models
 {
     public class Location
     {
+        public int InstallationID { get; set; }
         public string LocationName { get; set; }
         public string CorpsName { get; set; }
         public string GateName { get; set; }

@@ -1,11 +1,24 @@
 ﻿/* Custom CSS */
 
+body {
+    padding-top: 5.5rem !important;
+    padding-bottom: 5.5rem !important;
+}
+
 #DBInf {
-    margin-top:15rem;
+    margin-top:10rem;
 }
 
     #DBInf th {
         vertical-align:bottom;
     }
 
+.card table tr td {
+    vertical-align:middle;
+}
 
+.table tr th {
+
+    height:3.5rem;
+
+}
