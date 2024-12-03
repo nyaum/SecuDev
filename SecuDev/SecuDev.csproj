@@ -142,6 +142,7 @@
     <Content Include="lib\Bootstrap\bootstrap.min.css" />
     <Content Include="lib\ChartJS\chart.min.js" />
     <Content Include="lib\ChartJS\chartjs-plugin-datalabels.js" />
+    <Content Include="lib\common.css" />
     <Content Include="lib\FontAwesome\css\all.css" />
     <Content Include="lib\FontAwesome\css\all.min.css" />
     <Content Include="lib\FontAwesome\css\brands.css" />

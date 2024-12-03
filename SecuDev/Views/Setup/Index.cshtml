@@ -19,9 +19,21 @@
                         data: Param,
                         success: function (data) {
 
+                            if (data == 'OK') {
+
+                                alert("DB 연결이 정상 처리되었습니다.");
+
+                                location.href = '/Home/Index';
+                                
+                            }
+                            else
+                            {
+
+                                alert("오류가 발생했습니다.")
+
+                            }
                         }
                     });
-
                 }
             });
         })
@@ -29,20 +41,40 @@
     })
 
 </script>
-
-<label>DBHsot</label>
-<input type="text" class="form-control" id="DBHost" value="127.0.0.1" />
-
-<label>Port</label>
-<input type="text" class="form-control" id="Port" value="1433" readonly/>
-
-<label>DBName</label>
-<input type="text" class="form-control" id="DBName" value="NavyWork"/>
-
-<label>User</label>
-<input type="text" class="form-control" id="User" value="sa"/>
-
-<label>Password</label>
-<input type="text" class="form-control" id="Password" value="s1access!"/>
-
-<button type="button" id="confirm" class="btn btn-info">저장</button>
+<table id="DBInf" class="table table-bordered w-75 text-center container-fluid">
+    <tr>
+        <th class="bg-light">
+            <label>주소</label>
+        </th>
+        <td><input type="text" class="form-control" id="DBHost" value="127.0.0.1" /></td>
+    </tr>
+    <tr>
+        <th class="bg-light">
+            <label>포트</label>
+        </th>
+        <td><input type="text" class="form-control" id="Port" value="1433" readonly /></td>
+    </tr>
+    <tr>
+        <th class="bg-light">
+            <label>DB 이름</label>
+        </th>
+        <td><input type="text" class="form-control" id="DBName" value="NavyWork" /></td>
+    </tr>
+    <tr>
+        <th class="bg-light">
+            <label>아이디</label>
+        </th>
+        <td><input type="text" class="form-control" id="User" value="sa" /></td>
+    </tr>
+    <tr>
+        <th class="bg-light">
+            <label>비밀번호</label>
+        </th>
+        <td><input type="password" class="form-control" id="Password" value="s1access!" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button id="confirm" type="button" class="btn btn-info float-right col-2">저장</button>
+        </td>
+    </tr>
+</table>
