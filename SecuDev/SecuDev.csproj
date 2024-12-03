@@ -129,6 +129,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Base\MdlBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LatestUpadateController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2330,6 +2331,8 @@
     <Content Include="Views\Setup\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Upload\Data\WebSetup.ini" />
+    <Content Include="Views\LatestUpadate\Index.cshtml" />
+    <Content Include="Views\Shared\_PopLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
