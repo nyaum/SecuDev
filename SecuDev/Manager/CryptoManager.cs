@@ -94,5 +94,23 @@ namespace SecuDEV.Manager
 
             return Encoding.UTF8.GetString(message);
         }
+    
+        public static string EncryptBySHA256(string text)
+        {
+            System.Security.Cryptography.SHA256 sha = new System.Security.Cryptography.SHA256Managed();
+
+            byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(text));
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (byte b in hash)
+            {
+                stringBuilder.AppendFormat("{0:x2}", b);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+
     }
 }
