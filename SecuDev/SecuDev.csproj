@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -131,9 +132,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LatestUpadateController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
+    <Compile Include="Filter\SessionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SessionHelper.cs" />
     <Compile Include="Helper\SqlHelper.cs" />
     <Compile Include="Helper\SqlParamCollection.cs" />
     <Compile Include="Helper\Utility.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Manager\IOManager.cs" />
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,16 +9,18 @@ using System.Web;
 using System.Web.Mvc;
 using WebAdmin.Models;
 using PagedList;
+using SecuDev.Filter;
 
 namespace SecuDev.Controllers
 {
+    [SessionFilter]
     public class LatestUpadateController : Controller
     {
         // GET: LatestUpadate
         public ActionResult Index(int? Page)
         {
             int PageNo = Page ?? 1;
-            int PageSize = 10;
+            int PageSize = 13;
 
             SqlParamCollection param = new SqlParamCollection();
 

@@ -13,6 +13,15 @@ body {
         vertical-align:bottom;
     }
 
+#Login {
+    margin-top: 10rem;
+}
+
+.fadeSlow {
+    transition: opacity 1s ease-out !important;
+}
+
+
 .card table tr td {
     vertical-align:middle;
 }
@@ -22,3 +31,8 @@ body {
     height:3.5rem;
 
 }
+
+nav {
+    min-width:720px;
+}
+

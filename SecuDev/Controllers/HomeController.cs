@@ -9,64 +9,63 @@ using System.Web;
 using System.Web.Mvc;
 using WebAdmin.Models;
 using PagedList;
+using SecuDEV.Manager;
 
 namespace SecuDev.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(int? Page)
+        public ActionResult Index(string alertType = "")
         {
-            int PageNo = Page ?? 1;
-            int PageSize = 10;
+            // 세션 초기화
+            Session.Clear();
 
-            SqlParamCollection param = new SqlParamCollection();
+            ViewBag.alertType = alertType;
 
-            DataSet ds = (new Common()).MdlList(param, "usp_GetLatestUpdatesByLocation");
-
-            List<Location> list = new List<Location>();
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-
-                Location l = new Location();
-
-                l.InstallationID = Int32.Parse(ds.Tables[0].Rows[i]["InstallationID"].ToString());
-                l.LocationName = ds.Tables[0].Rows[i]["LocationName"].ToString();
-                l.CorpsName = ds.Tables[0].Rows[i]["CorpsName"].ToString();
-                l.GateName = ds.Tables[0].Rows[i]["GateName"].ToString();
-                l.InstallationDate = Utility.DateTimeFormat(ds.Tables[0].Rows[i]["InstallationDate"].ToString(), 1);
-                l.InstallationType = ds.Tables[0].Rows[i]["InstallationType"].ToString();
-                l.SoftwareName = ds.Tables[0].Rows[i]["SoftwareName"].ToString();
-                l.Version = ds.Tables[0].Rows[i]["Version"].ToString();
-                l.Notes = ds.Tables[0].Rows[i]["Notes"].ToString();
-
-                list.Add(l);
-            }
-
-            return View(list.ToPagedList(PageNo, PageSize));
+            return View();
         }
 
-        public JsonResult GetUpdatedHistory(FormCollection col)
+        [HttpPost]
+        public ActionResult Login(FormCollection col)
         {
-            SqlParamCollection param = new SqlParamCollection();
+            // 세션 초기화
+            Session.Clear();
 
-            param.Add("@InstallationID", col["InstallationID"]);
+            string Result = "";
 
-            DataSet ds = (new Common()).MdlList(param, "usp_GetLatestUpdatesByLocation");
+            string UserID = "";
+            string Password = CryptoManager.EncryptBySHA256(col["Password"]);
 
-            Location l = new Location();
+            try
+            {
+                SqlParamCollection param = new SqlParamCollection();
 
-            l.InstallationID = Int32.Parse(ds.Tables[0].Rows[0]["InstallationID"].ToString());
-            l.LocationName = ds.Tables[0].Rows[0]["LocationName"].ToString();
-            l.CorpsName = ds.Tables[0].Rows[0]["CorpsName"].ToString();
-            l.GateName = ds.Tables[0].Rows[0]["GateName"].ToString();
-            l.InstallationDate = Utility.DateTimeFormat(ds.Tables[0].Rows[0]["InstallationDate"].ToString(), 1);
-            l.InstallationType = ds.Tables[0].Rows[0]["InstallationType"].ToString();
-            l.SoftwareName = ds.Tables[0].Rows[0]["SoftwareName"].ToString();
-            l.Version = ds.Tables[0].Rows[0]["Version"].ToString();
-            l.Notes = ds.Tables[0].Rows[0]["Notes"].ToString();
+                param.Add("@UserID", col["UserID"]);
+                param.Add("@Password", CryptoManager.EncryptBySHA256(col["Password"]));
 
-            return Json(new { Result = l });;
+                DataSet ds = (new Common()).MdlList(param, "PROC_LOGIN");
+
+                if (ds.Tables[0].Rows.Count == 1)
+                {
+
+                    Session["UserID"] = ds.Tables[0].Rows[0]["UserID"].ToString();
+                    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
+                    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
+
+                    Result = ds.Tables[0].Rows[0]["Result"].ToString();
+                }
+                else
+                {
+                    Result = "Invalid";
+                }
+            }
+            catch (Exception ex)
+            {
+                Result = "ERR";
+            }
+            
+
+            return Json(new { Result });
         }
 
     }
