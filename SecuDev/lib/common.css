@@ -1,8 +1,8 @@
 ﻿/* Custom CSS */
 
 body {
-    padding-top: 5.5rem !important;
-    padding-bottom: 5.5rem !important;
+    padding-top: 5rem !important;
+    /*padding-bottom: 5rem !important;*/
 }
 
 #DBInf {
@@ -21,9 +21,22 @@ body {
     transition: opacity 1s ease-out !important;
 }
 
+.pagination > li > a {
+    color:grey;
+}
+
+.pagination > .active > a:hover {
+    background-color: grey;
+    border-color: grey;
+}
+
+.pagination > .active > a {
+    background-color: lightgrey;
+    border-color:lightgrey;
+}
 
 .card table tr td {
-    vertical-align:middle;
+    vertical-align: middle;
 }
 
 .table tr th {

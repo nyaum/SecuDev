@@ -14,13 +14,12 @@ using SecuDev.Filter;
 namespace SecuDev.Controllers
 {
     [SessionFilter]
-    public class LatestUpadateController : Controller
+    public class LatestUpdateController : Controller
     {
-        // GET: LatestUpadate
-        public ActionResult Index(int? Page)
+        // GET: LatestUpdate
+        public ActionResult Index(int? Page, int PageSize = 10)
         {
             int PageNo = Page ?? 1;
-            int PageSize = 13;
 
             SqlParamCollection param = new SqlParamCollection();
 
@@ -49,6 +48,7 @@ namespace SecuDev.Controllers
             return View(list.ToPagedList(PageNo, PageSize));
         }
 
+        [HttpPost]
         public JsonResult GetUpdatedHistory(FormCollection col)
         {
             SqlParamCollection param = new SqlParamCollection();

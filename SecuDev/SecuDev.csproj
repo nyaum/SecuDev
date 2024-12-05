@@ -130,8 +130,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Base\MdlBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LatestUpadateController.cs" />
+    <Compile Include="Controllers\LatestUpdateController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
+    <Compile Include="Controllers\SoftwareInstallationController.cs" />
     <Compile Include="Filter\SessionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -148,6 +149,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\DatePicker\custom-datepicker.js" />
+    <Content Include="lib\DatePicker\datepicker-bs5.min.css" />
+    <Content Include="lib\DatePicker\datepicker-full.min.js" />
+    <Content Include="lib\DatePicker\datepicker.min.css" />
     <Content Include="lib\PagedList\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -2335,8 +2340,9 @@
     <Content Include="Views\Setup\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Upload\Data\WebSetup.ini" />
-    <Content Include="Views\LatestUpadate\Index.cshtml" />
+    <Content Include="Views\LatestUpdate\Index.cshtml" />
     <Content Include="Views\Shared\_PopLayout.cshtml" />
+    <Content Include="Views\SoftwareInstallation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
