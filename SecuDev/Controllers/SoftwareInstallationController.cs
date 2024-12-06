@@ -16,11 +16,33 @@ namespace SecuDev.Controllers
     [SessionFilter]
     public class SoftwareInstallationController : Controller
     {
-        public ActionResult Index(FormCollection col, int? Page, int PageSize = 10)
+        public ActionResult Index(int? Page, int PageSize = 10, bool search = false)
         {
             int PageNo = Page ?? 1;
 
+            // 검색하면 페이지는 1번으로
+            if (search)
+            {
+                PageNo = 1;
+            }
+
+            string InstallSDate = Utility.DateTimeFormat(Request["InstallSDate"], 1) ?? "";
+            string InstallEDate = Utility.DateTimeFormat(Request["InstallEDate"], 1) ?? "";
+
+            string LocationID = Request["LocationID"] ?? "";
+            string SoftwareID = Request["SoftwareID"] ?? "";
+
+            string CorpsName = Request["CorpsName"] ?? "";
+            string GateName = Request["GateName"] ?? "";
+
             SqlParamCollection param = new SqlParamCollection();
+
+            param.Add("@InstallSDate", InstallSDate);
+            param.Add("@InstallEDate", InstallEDate);
+            param.Add("@LocationID", LocationID);
+            param.Add("@SoftwareID", SoftwareID);
+            param.Add("@CorpsName", CorpsName);
+            param.Add("@GateName", GateName);
 
             DataSet ds = (new Common()).MdlList(param, "USP_GET_UPDATEBYLOCATION");
 
@@ -45,8 +67,12 @@ namespace SecuDev.Controllers
             }
 
             ViewBag.Count = list.Count;
-            ViewBag.InstallSDate = col["InstallSDate"];
-            ViewBag.InstallEDate = col["InstallEDate"];
+            ViewBag.InstallSDate = InstallSDate;
+            ViewBag.InstallEDate = InstallEDate;
+            ViewBag.LocationID = LocationID;
+            ViewBag.SoftwareID = SoftwareID;
+            ViewBag.CorpsName  = CorpsName;
+            ViewBag.GateName   = GateName;
 
             return View(list.ToPagedList(PageNo, PageSize));
         }

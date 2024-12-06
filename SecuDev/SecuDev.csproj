@@ -145,6 +145,7 @@
     <Compile Include="Manager\IOManager.cs" />
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Software.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
