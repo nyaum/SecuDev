@@ -33,9 +33,6 @@ namespace SecuDev.Controllers
 
             string Result = "";
 
-            string UserID = "";
-            string Password = CryptoManager.EncryptBySHA256(col["Password"]);
-
             try
             {
                 SqlParamCollection param = new SqlParamCollection();
@@ -59,7 +56,7 @@ namespace SecuDev.Controllers
                     Result = "Invalid";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Result = "ERR";
             }

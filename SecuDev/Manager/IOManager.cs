@@ -110,7 +110,6 @@ namespace SecuDev.Manager
         public class FilePathClass
         {
             string DefaultDataPath = HttpContext.Current.Server.MapPath("/Upload/");
-            string DefaultiiSPath = "/Upload/";
             public string DataConn { get { return DefaultDataPath + "Data/"; } }
         }
 
