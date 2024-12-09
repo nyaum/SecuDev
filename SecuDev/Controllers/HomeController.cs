@@ -65,5 +65,12 @@ namespace SecuDev.Controllers
             return Json(new { Result });
         }
 
+        public ActionResult Main()
+        {
+
+
+            return View();
+        }
+
     }
 }

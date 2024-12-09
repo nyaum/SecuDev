@@ -64,6 +64,9 @@ namespace SecuDev.Helper
                     case 6:
                         Rtn = String.Format("{0:yyyy년 MM월 dd일}", dt);
                         break;
+                    case 7:
+                        Rtn = String.Format("{0:yyyyMMddHHmmss}", dt);
+                        break;
                 }
             }
 

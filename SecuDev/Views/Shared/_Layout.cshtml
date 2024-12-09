@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="/Upload/img/logo.jpg" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,15 +35,12 @@
     <link rel="stylesheet" href="/lib/DatePicker/datepicker.min.css" />
     <link rel="stylesheet" href="/lib/DatePicker/datepicker-bs5.min.css" />
     <script src="/lib/DatePicker/custom-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/es.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/fr.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/zh-CN.js"></script>
 
     <!-- Custom CSS -->
-    <link href="/lib/common.css?@Utility.DateTimeFormat(nowDate, 3)" rel="stylesheet" />
+    <link href="/lib/common.css?@Utility.DateTimeFormat(nowDate, 7)" rel="stylesheet" />
 
     <!-- Custom JS -->
-    <script src="/lib/common.js?@Utility.DateTimeFormat(nowDate, 3)"></script>
+    <script src="/lib/common.js?@Utility.DateTimeFormat(nowDate, 7)"></script>
 
     <script>
 
@@ -51,30 +49,92 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand bg-dark navbar-dark fixed-top shadow">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/LatestUpdate">부대별 최신업데이트 현황</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/SoftwareInstallation">작업이력조회</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">작업등록</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">작업 통계</a>
-            </li>
-        </ul>
-        <span class="navbar-text ms-auto me-4">@Session["UserName"]</span>
-        <a href="/" class="nav-link text-white me-4"><i class="fa-solid fa-right-from-bracket"></i></a>
-    </nav>
+    <div class="container-fluid min-vh-100 p-0 d-flex">
+        <div id="bdSidebar" class="d-flex flex-column flex-shrink-0 p-3 bg-secondary text-white offcanvas-md offcanvas-start">
 
-    <div class="container body-content">
+            <img role="button" src="~/Upload/img/logo2.png" width="250" class="img-fluid" onclick="location.replace('/Home/Main')"/>
+
+            <hr>
+
+            <div class="d-flex card bg-secondary">
+                <div class="card-body">
+                    <span class="text-white">
+                        @Session["UserName"]
+                        <a href="/" class="text-white float-end"><i class="fa-solid fa-right-from-bracket"></i></a>
+                    </span>
+                </div>
+            </div>
+
+            <hr />
+
+            <ul class="list-group list-group-flush">
+
+                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3 active">
+                    <span class=" d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-list-check pe-3"></i>
+                        프로젝트
+                        <i class="fa-solid fa-chevron-right ms-auto"></i>
+                    </span>
+                </li>
+
+                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3">
+
+                    <span class=" d-flex align-items-center justify-content-center">
+                        <i class="fa-regular fa-comments pe-3"></i>
+                        게시판
+                        <i class="fa-solid fa-chevron-right ms-auto"></i>
+                    </span>
+                </li>
+
+            </ul>
+
+            <hr class="mt-auto"/>
+
+            <div role="button" class="d-flex card bg-secondary">
+                <div class="card-body">
+                    <span class="text-white">
+                        <i class="fa-regular fa-bell pe-3"></i>
+                        알림
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-light flex-fill">
+            <div class="p-2 d-md-none d-flex text-white bg-secondary">
+                <a href="#" class="text-white" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+                <span class="ms-3 fw-bold">SECUIDEA</span>
+            </div>
+            <div class="p-4 mh-100">
+                <nav style="--bs-breadcrumb-divider:'>';font-size:14px">
+                    <ol class="breadcrumb">
+                        <li role="button" class="breadcrumb-item" onclick="location.replace('/Home/Main')">
+                            <i class="fa-solid fa-house"></i>
+                        </li>
+                        <li class="breadcrumb-item">Learning Content</li>
+                        <li class="breadcrumb-item">Next Page</li>
+                    </ol>
+                </nav>
+
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*<div class="container body-content">
 
         @RenderBody()
 
-    </div>
+    </div>*@
 
     @*<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom" style="box-shadow: 0 0 10px rgba(0,0,0,.5) !important; ">
         <small class="navbar-text text-white p-0 ms-auto me-2">

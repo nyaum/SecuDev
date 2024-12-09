@@ -1,9 +1,9 @@
 ﻿/* Custom CSS */
 
-body {
-    padding-top: 5rem !important;
+/*body {
+    padding-top: 5rem !important;*/
     /*padding-bottom: 5rem !important;*/
-}
+/*}*/
 
 #DBInf {
     margin-top:10rem;
@@ -44,8 +44,3 @@ body {
     height:3.5rem;
 
 }
-
-nav {
-    min-width:720px;
-}
-
