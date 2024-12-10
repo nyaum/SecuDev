@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using WebAdmin.Models;
 using PagedList;
 using SecuDEV.Manager;
+using SecuDev.Filter;
 
 namespace SecuDev.Controllers
 {
@@ -65,6 +66,7 @@ namespace SecuDev.Controllers
             return Json(new { Result });
         }
 
+        [SessionFilter]
         public ActionResult Main()
         {
 

@@ -20,5 +20,18 @@
 
     })
 
+
+    // 페이지 이동 이벤트 (role = button 인지 체크)
+    $("[role=button]").on('click', function () {
+        var page = $(this).attr('href')
+
+        if (page == '' || page == null) {
+            return;
+        }
+
+        location.href = page;
+
+    })
+
 })
 

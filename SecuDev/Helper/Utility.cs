@@ -31,6 +31,9 @@ namespace SecuDev.Helper
         /// <para>format 3 : yyyy-MM-dd dddd HH:mm:ss</para>
         /// <para>format 4 : yyyy-MM-dd tt hh:mm:ss</para>
         /// <para>format 5 : yyyy</para>
+        /// <para>format 6 : yyyy년 MM월 dd일</para>
+        /// <para>format 7 : yyyyMMdd</para>
+        /// <para>format 8 : DateTime Differ</para>
         /// </summary>
         /// <param name="date"></param>
         /// <param name="format"></param>
@@ -38,6 +41,7 @@ namespace SecuDev.Helper
         public static string DateTimeFormat(string date, int format)
         {
             string Rtn = "";
+
 
             if (date != "" && date != null)
             {
@@ -66,6 +70,57 @@ namespace SecuDev.Helper
                         break;
                     case 7:
                         Rtn = String.Format("{0:yyyyMMddHHmmss}", dt);
+                        break;
+                    case 8:
+
+                        TimeSpan dateDiff = Convert.ToDateTime(GetNowDate()) - dt;
+
+                        double diffDay = dateDiff.Days;
+
+                        double diffMonth = Math.Truncate(diffDay / 30);
+
+                        double diffYear = Math.Truncate(diffMonth / 12);
+
+                        double diffHour = dateDiff.Hours;
+                        double diffMinute = dateDiff.Minutes;
+                        double diffSecond = dateDiff.Seconds;
+
+                        if (diffYear > 0)
+                        {
+                            Rtn = String.Format("{0}년 전", diffYear);
+                            break;
+                        }
+                        
+                        if (diffMonth > 0)
+                        {
+                            Rtn = String.Format("{0}달 전", diffMonth);
+                            break;
+                        }
+
+                        if (diffDay > 0)
+                        {
+                            Rtn = String.Format("{0}일 전", diffDay);
+                            break;
+                        }
+
+                        if (diffHour > 0)
+                        {
+                            Rtn = String.Format("{0}시간 전", diffHour);
+                            break;
+                        }
+
+                        if (diffMinute > 0)
+                        {
+                            Rtn = String.Format("{0}분 전", diffMinute);
+                            break;
+                        }
+
+                        if (diffSecond > 0)
+                        {
+                            Rtn = String.Format("{0}초 전", diffSecond);
+                            break;
+                        }
+
                         break;
                 }
             }

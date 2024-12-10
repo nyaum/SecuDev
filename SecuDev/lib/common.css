@@ -1,9 +1,12 @@
 ﻿/* Custom CSS */
 
-/*body {
-    padding-top: 5rem !important;*/
-    /*padding-bottom: 5rem !important;*/
-/*}*/
+body {
+    height: 100vh;
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
 
 #DBInf {
     margin-top:10rem;
@@ -39,8 +42,12 @@
     vertical-align: middle;
 }
 
-.table tr th {
+/*.table tr th {
 
     height:3.5rem;
 
+}*/
+
+.badge {
+    margin-right:10px;
 }

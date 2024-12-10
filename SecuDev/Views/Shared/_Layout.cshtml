@@ -42,6 +42,10 @@
     <!-- Custom JS -->
     <script src="/lib/common.js?@Utility.DateTimeFormat(nowDate, 7)"></script>
 
+    <!-- ToastUI-Editor -->
+    <script src="~/lib/ToastEditor/toastui-editor-all.min.js"></script>
+    <link href="~/lib/ToastEditor/toastui-editor.min.css" rel="stylesheet" />
+
     <script>
 
     </script>
@@ -49,10 +53,10 @@
 </head>
 <body>
 
-    <div class="container-fluid min-vh-100 p-0 d-flex">
+    <div class="container-fluid min-vh-100 mh-100 p-0 d-flex">
         <div id="bdSidebar" class="d-flex flex-column flex-shrink-0 p-3 bg-secondary text-white offcanvas-md offcanvas-start">
 
-            <img role="button" src="~/Upload/img/logo2.png" width="250" class="img-fluid" onclick="location.replace('/Home/Main')"/>
+            <img role="button" src="~/Upload/img/logo2.png" width="250" class="img-fluid" href="/Home/Main" />
 
             <hr>
 
@@ -69,17 +73,17 @@
 
             <ul class="list-group list-group-flush">
 
-                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3 active">
-                    <span class=" d-flex align-items-center justify-content-center">
+                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3" href="/LatestUpdate">
+                    <span class="d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-list-check pe-3"></i>
                         프로젝트
                         <i class="fa-solid fa-chevron-right ms-auto"></i>
                     </span>
                 </li>
 
-                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3">
+                <li role="button" class="list-group-item bg-transparent border-0 text-white py-3" href="/Board">
 
-                    <span class=" d-flex align-items-center justify-content-center">
+                    <span class="d-flex align-items-center justify-content-center">
                         <i class="fa-regular fa-comments pe-3"></i>
                         게시판
                         <i class="fa-solid fa-chevron-right ms-auto"></i>
@@ -88,20 +92,20 @@
 
             </ul>
 
-            <hr class="mt-auto"/>
+            <hr class="mt-auto" />
 
-            <div role="button" class="d-flex card bg-secondary">
-                <div class="card-body">
-                    <span class="text-white">
-                        <i class="fa-regular fa-bell pe-3"></i>
-                        알림
-                    </span>
-                </div>
-            </div>
+            @*<div role="button" class="d-flex card bg-secondary" data-bs-toggle="offcanvas" data-bs-target="#alert">
+                    <div class="card-body">
+                        <span class="text-white">
+                            <i class="fa-regular fa-bell pe-3"></i>
+                            알림
+                        </span>
+                    </div>
+                </div>*@
 
         </div>
 
-        <div class="bg-light flex-fill">
+        <div class="bg-light flex-fill mh-100 overflow-auto">
             <div class="p-2 d-md-none d-flex text-white bg-secondary">
                 <a href="#" class="text-white" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar">
                     <i class="fa-solid fa-bars"></i>
@@ -109,17 +113,19 @@
                 <span class="ms-3 fw-bold">SECUIDEA</span>
             </div>
             <div class="p-4 mh-100">
+
                 <nav style="--bs-breadcrumb-divider:'>';font-size:14px">
                     <ol class="breadcrumb">
-                        <li role="button" class="breadcrumb-item" onclick="location.replace('/Home/Main')">
+                        <li role="button" class="breadcrumb-item" href="/Home/Main">
                             <i class="fa-solid fa-house"></i>
                         </li>
-                        <li class="breadcrumb-item">Learning Content</li>
-                        <li class="breadcrumb-item">Next Page</li>
+                        <li class="breadcrumb-item">상위 카테고리</li>
+                        <li class="breadcrumb-item">하위 카테고리</li>
                     </ol>
                 </nav>
 
-                <hr>
+                <hr />
+
                 <div class="row">
                     <div class="col">
                         @RenderBody()
@@ -130,16 +136,89 @@
         </div>
     </div>
 
+    <!-- Alarm -->
+    <div class="position-absolute bottom-0 end-0 translate-middle-x pb-5">
+        <div role="button" class="d-flex card bg-light rounded-5 shadow-sm" data-bs-toggle="offcanvas" data-bs-target="#alarm" style="--bs-border-radius-xxl: 5rem;">
+            <span class="text-secondary p-4">
+                <i class="fa-regular fa-bell px-1"></i>
+            </span>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" id="alarm">
+        <div class="offcanvas-header border-bottom">
+            <h3 class="offcanvas-title">알림</h3>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="card mb-2">
+                <div class="card-body p-1">
+                    <span class="d-flex align-items-center justify-content-center border-bottom p-2">
+                        게시글 멘션 알림
+                        <i class="fa-solid fa-chevron-right ms-auto"></i>
+                    </span>
+
+                    <div class="p-2">
+                        알림 내용
+                    </div>
+
+                    <div>
+                        <small class="text-secondary float-end" style="font-size:12px;">@Utility.DateTimeFormat("2024-12-10 13:00:00", 8)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <div class="card-body p-1">
+                    <span class="d-flex align-items-center justify-content-center border-bottom p-2">
+                        새 프로젝트 등록
+                        <i class="fa-solid fa-chevron-right ms-auto"></i>
+                    </span>
+
+
+                    <div class="p-2">
+                        알림 내용
+                    </div>
+
+                    <div>
+                        <small class="text-secondary float-end" style="font-size:12px;">@Utility.DateTimeFormat("2024-12-10 13:00:00", 8)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-2">
+                <div class="card-body p-1">
+                    <span class="d-flex align-items-center justify-content-center border-bottom p-2">
+                        알림 제목
+                        <i class="fa-solid fa-chevron-right ms-auto"></i>
+                    </span>
+
+
+                    <div class="p-2">
+                        알림 내용
+                    </div>
+                    <div>
+                        <small class="text-secondary float-end" style="font-size:12px;">@Utility.DateTimeFormat("2024-12-10 13:00:00", 8)</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
     @*<div class="container body-content">
 
-        @RenderBody()
+            @RenderBody()
 
-    </div>*@
+        </div>*@
 
     @*<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom" style="box-shadow: 0 0 10px rgba(0,0,0,.5) !important; ">
-        <small class="navbar-text text-white p-0 ms-auto me-2">
-            Copyright &copy; @Utility.DateTimeFormat(nowDate, 5) Corporation. All Rights Reserved.
-        </small>
-    </nav>*@
+            <small class="navbar-text text-white p-0 ms-auto me-2">
+                Copyright &copy; @Utility.DateTimeFormat(nowDate, 5) Corporation. All Rights Reserved.
+            </small>
+        </nav>*@
 </body>
 </html>
