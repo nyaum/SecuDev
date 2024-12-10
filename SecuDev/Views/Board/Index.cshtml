@@ -1,0 +1,104 @@
+﻿@using SecuDev.Models;
+@using SecuDev.Helper;
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string nowDate = Utility.GetNowDate();
+
+}
+<div>
+
+    <div class="float-end pb-2">
+        <select id="PageSize" class="form-select form-select-sm" pgcnt>
+            <option selected value="10">10 건</option>
+            <option value="20">20 건</option>
+            <option value="30">30 건</option>
+        </select>
+    </div>
+
+    <table class="table table-hover shadow-sm ">
+
+        <thead>
+            <tr>
+                <th width="5%"></th>
+                <th>제목</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr role="button" href="">
+                <td class="align-middle text-center">56986707</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-success">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-10 11:00:00", 8)</small>
+                </td>
+            </tr>
+            <tr role="button" href="">
+                <td class="align-middle text-center">5</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-secondary">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 8)</small>
+                </td>
+            </tr>
+            <tr role="button" href="">
+                <td class="align-middle text-center">4</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-primary">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-11-10 11:00:00", 8)</small>
+                </td>
+            </tr>
+            <tr role="button" href="">
+                <td class="align-middle text-center">3</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-danger">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2023-12-09 11:00:00", 8)</small>
+                </td>
+            </tr>
+            <tr role="button" href="">
+                <td class="align-middle text-center">2</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-warning">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 8)</small>
+                </td>
+            </tr>
+            <tr role="button" href="">
+                <td class="align-middle text-center">1</td>
+                <td>
+                    <div class="mb-1">
+                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
+                    </div>
+                    <span class="badge rounded-pill bg-info">카테고리</span>
+                    <small class="text-secondary">이름</small>
+                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 8)</small>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</div>
+<div>
+    <button role="button" class="btn btn-light shadow-sm float-end text-primary" href="/Board/Edit">
+        <i class="fa-solid fa-pen me-2"></i>
+        글쓰기
+    </button>
+</div>

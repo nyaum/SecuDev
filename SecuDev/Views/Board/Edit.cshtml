@@ -1,0 +1,67 @@
+﻿@using SecuDev.Models;
+@using SecuDev.Helper;
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string nowDate = Utility.GetNowDate();
+
+}
+
+<script>
+
+    $().ready(function () {
+
+        //$('#editor').summernote();
+
+        const editor = new toastui.Editor({
+            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
+            height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+            initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+            previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
+            language: 'ko',                          // 언어 설정
+            hideModeSwitch:true
+        });
+
+    })
+
+</script>
+
+
+<div style="height:60vh;">
+
+    <div class="input-group">
+        <button type="button" class="btn btn-light dropdown-toggle border-secondary" data-bs-toggle="dropdown">
+            카테고리
+        </button>
+
+        <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity)) !important ">
+            <li><a class="dropdown-item">카테고리1</a></li>
+            <li><a class="dropdown-item">카테고리2</a></li>
+            <li><a class="dropdown-item">카테고리3</a></li>
+            <li><a class="dropdown-item">카테고리4</a></li>
+        </ul>
+
+        <input type="text" class="form-control border-secondary" />
+    </div>
+
+    <hr />
+
+    <div id="content"></div>
+
+    <hr />
+
+    <div class="d-flex">
+        <div class="input-group w-75">
+            <input type="text" class="form-control border-secondary" placeholder="알림을 보낼 사용자 추가" value="" readonly />
+            <button type="button" class="btn btn-light border-secondary">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+        <div class="ms-auto">
+            <button class="btn btn-light shadow-sm text-primary">
+                <i class="fa-solid fa-check me-2"></i>
+                작성
+            </button>
+        </div>
+    </div>
+</div>
