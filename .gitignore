@@ -366,3 +366,4 @@ FodyWeavers.xsd
 Web.Debug.config
 Web.Release.config
 [Uu]pload/*
+/SecuDev/Upload/File/
