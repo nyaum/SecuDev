@@ -158,6 +158,11 @@
     <Content Include="lib\DatePicker\datepicker-bs5.min.css" />
     <Content Include="lib\DatePicker\datepicker-full.min.js" />
     <Content Include="lib\DatePicker\datepicker.min.css" />
+    <Content Include="lib\FilePond\filepond-plugin-file-validate-size.js" />
+    <Content Include="lib\FilePond\filepond-plugin-image-preview.min.js" />
+    <Content Include="lib\FilePond\filepond.css" />
+    <Content Include="lib\FilePond\filepond.jquery.js" />
+    <Content Include="lib\FilePond\filepond.min.js" />
     <Content Include="lib\ToastEditor\toastui-editor-all.min.js" />
     <Content Include="lib\ToastEditor\toastui-editor.min.css" />
     <Content Include="Upload\img\logo.jpg" />
@@ -2362,6 +2367,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\" />
+    <Folder Include="Upload\File\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -2394,7 +2400,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58749</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44351/</IISUrl>
+          <IISUrl>http://localhost:44351/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

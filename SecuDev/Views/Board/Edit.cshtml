@@ -10,8 +10,105 @@
 <script>
 
     $().ready(function () {
+        
+        var myFiles = {
+            'myuniquefileid': 'limbo',
+            'myotheruniquefileid': 'local'
+        };
 
-        //$('#editor').summernote();
+        FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+        // Turn input element into a pond
+        $('#fileUpload').filepond();
+
+        // Set plugins && opt
+        $('#fileUpload').filepond({
+            allowMultiple: true,
+            maxFileSize: '50MB',
+            labelMaxFileSizeExceeded: '파일 사이즈 오류',
+            labelMaxFileSize: '최대 {filesize} 까지 업로드 가능합니다',
+        });
+
+        FilePond.setOptions({
+            server: {
+                process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+
+                    // 첨부파일 Input 호출
+                    var input = document.getElementById('fileUpload');
+
+                    const formData = new FormData();
+
+                    formData.append("fieldName", fieldName);
+                    formData.append("file", file);
+                    formData.append("fileName", file.name);
+
+                    const request = new XMLHttpRequest();
+                    request.open('POST', '/Board/FileUpload', true);
+
+                    request.upload.onprogress = (e) => {
+                        progress(e.lengthComputable, e.loaded, e.total);
+                    };
+
+                    request.onload = function () {
+                        if (request.status >= 200 && request.status < 300) {
+
+                            load(request.responseText);
+
+                        } else {
+
+                            error('error! > ' + request.status);
+
+                        }
+                    };
+                    request.send(formData);
+
+                    return {
+                        abort: () => {
+
+                            request.abort();
+
+                            abort();
+
+                        },
+                    };
+                },
+                revert: (uniqueFileId, load, error) => {
+
+                    const formData = new FormData();
+
+                    const origin = myFiles[uniqueFileId];
+
+                    const request = new XMLHttpRequest();
+                    request.open('POST', '/Board/FileDelete', true);
+                    request.send(formData);
+
+                    console.log(uniqueFieId)
+
+                    error('oh my goodness');
+
+                    load();
+                },
+            },
+        });
+
+        function btnUpload() {
+
+            const button = document.createElement('button');
+
+            button.className = 'toastui-editor-toolbar-icons';
+            button.id = 'upload'
+            button.style.backgroundImage = 'none';
+            button.style.margin = '0';
+            button.style.color = 'dimgrey';
+            button.style.fontSize = '16px';
+            button.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i>';
+            button.addEventListener('click', () => {
+                $("#file-modal").modal('show');
+            });
+
+            return button;
+
+        }
 
         const editor = new toastui.Editor({
             el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
@@ -19,7 +116,18 @@
             initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
             previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
             language: 'ko',                          // 언어 설정
-            hideModeSwitch:true
+            hideModeSwitch: true,
+            toolbarItems: [
+                ['heading', 'bold', 'italic', 'strike'],
+                ['hr', 'quote'],
+                ['ul', 'ol', 'task', 'indent', 'outdent'],
+                ['table', 'image', 'link',
+                    {
+                        el: btnUpload(),
+                        tooltip: '업로드'
+                    }
+                ],
+            ]
         });
 
     })
@@ -64,4 +172,20 @@
             </button>
         </div>
     </div>
+</div>
+
+<!-- File Popup -->
+<div id="file-modal" class="modal fade mt-5">
+    <form action="/" method="post" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>파일 업로드</span>
+                </div>
+                <div class="modal-body">
+                    <input type="file" id="fileUpload" multiple />
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

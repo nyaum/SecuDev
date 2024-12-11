@@ -32,7 +32,7 @@ namespace SecuDev.Helper
         /// <para>format 4 : yyyy-MM-dd tt hh:mm:ss</para>
         /// <para>format 5 : yyyy</para>
         /// <para>format 6 : yyyy년 MM월 dd일</para>
-        /// <para>format 7 : yyyyMMdd</para>
+        /// <para>format 7 : yyyyMMddHHmmss</para>
         /// <para>format 8 : DateTime Differ</para>
         /// </summary>
         /// <param name="date"></param>
@@ -72,6 +72,9 @@ namespace SecuDev.Helper
                         Rtn = String.Format("{0:yyyyMMddHHmmss}", dt);
                         break;
                     case 8:
+                        Rtn = String.Format("{0:yyMMdd}", dt);
+                        break;
+                    case 9:
 
                         TimeSpan dateDiff = Convert.ToDateTime(GetNowDate()) - dt;
 
