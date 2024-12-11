@@ -365,3 +365,4 @@ FodyWeavers.xsd
 # SECU ADD
 Web.Debug.config
 Web.Release.config
+[Uu]pload/*
