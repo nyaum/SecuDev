@@ -5,7 +5,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Web;
-using FrameWork.DB;
+//using FrameWork.DB;
 
 namespace SecuDev.Manager
 {

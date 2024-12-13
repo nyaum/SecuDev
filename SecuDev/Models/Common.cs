@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Transactions;
 using FrameWork.Bases;
 using FrameWork.DB;
@@ -82,6 +83,27 @@ namespace WebAdmin.Models
                     Database.ExecuteNonQuery(ProcName, param, CommandType.StoredProcedure);
 
                     rtn = param["Return_Value"].Value.ToString();
+
+                    t.Complete();
+                }
+            }
+
+            return rtn;
+        }
+
+        public int MdlRegIntRtn(SqlParamCollection param, string ProcName)
+        {
+            int rtn = -1;
+
+            if (!ProcName.Equals(""))
+            {
+                using (TransactionScope t = new TransactionScope())
+                {
+                    param.Add("Return_Value", SqlDbType.Int, 255, ParameterDirection.ReturnValue);
+
+                    Database.ExecuteNonQuery(ProcName, param, CommandType.StoredProcedure);
+
+                    rtn = Int32.Parse(param["Return_Value"].Value.ToString());
 
                     t.Complete();
                 }

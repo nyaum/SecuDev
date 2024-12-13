@@ -1,5 +1,6 @@
-﻿using FrameWork.DB;
+﻿using CryptoManager;
 using SecuDev.Helper;
+using SingletonManager;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,12 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebAdmin.Models;
+
 
 namespace SecuDev.Controllers
 {
     public class BoardController : Controller
     {
+        ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.AES256);
+
         // GET: Board
         public ActionResult Index()
         {
@@ -66,7 +69,7 @@ namespace SecuDev.Controllers
                                 var tmp = formFile.FileName.Substring(0, idx);
                                 newFileName = tmp + String.Format("({0})", filecnt++) + formFile.FileName.Substring(idx);
                                 fileFullPath = uploadDir + newFileName;
-                                fileDir = dir + newFileName;
+                                fileDir = dir + newFileName;    // TODO: 여기에서 다시 파일 경로를 조합하고 있음
                             }
 
                             formFile.SaveAs(fileFullPath);
@@ -74,8 +77,8 @@ namespace SecuDev.Controllers
                             // 마지막 배열일경우 | 를 표시하지 않음
                             if (formFile.Equals(file.Last()))
                             {
-                                dbFilePath += fileDir;
-                                altFileName += fileName;
+                                dbFilePath = crypto.Encrypt(fileDir);   // TODO: += 연산자가 필요 없어 보임
+                                altFileName = fileName;
                             }
                             else
                             {
@@ -94,14 +97,22 @@ namespace SecuDev.Controllers
 
             }
 
-            return Json(new { Rtn });
+            return Json(new { dbFilePath, altFileName });
         }
 
         [HttpPost]
-        public ActionResult FileDelete() {
+        public ActionResult FileDelete(string dbFilePath) {
 
             string sRtn = "Fail";
 
+            dbFilePath = crypto.Decrypt(dbFilePath);
+
+            if (System.IO.File.Exists($"{Server.MapPath("/")}/Upload/File/" + dbFilePath))
+            {
+
+                System.IO.File.Delete($"{Server.MapPath("/")}/Upload/File/" + dbFilePath);
+
+            }
 
             return Json(new { });
         }

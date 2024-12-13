@@ -1,16 +1,47 @@
-﻿using FrameWork.DB;
+﻿//using FrameWork.DB;
 using SecuDev.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
-using WebAdmin.Models;
+//using WebAdmin.Models;
+using System.Net;
+using CoreDAL.Configuration.Interface;
+using SingletonManager;
+using CoreDAL.ORM;
+using CoreDAL.ORM.Extensions;
+using System.Threading.Tasks;
 
 namespace SecuDev.Helper
 {
+    public enum Types
+    {
+        Category,
+
+    }
+
+    public class TypeParam : SQLParam
+    {
+        public Types _Type { get; set; }
+        [DbParameter]
+        public string type { 
+            get
+            {
+                return _Type.ToString();
+            }
+            set
+            {
+
+            }
+        }
+    }
+
     public class Utility
     {
+
+        public static IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
+
         /// <summary>
         /// <para>Get Now DateTime </para>
         /// </summary>
@@ -136,56 +167,39 @@ namespace SecuDev.Helper
         /// <para>Get Location List</para>
         /// </summary>
         /// <returns></returns>
-        public static List<Location> GetLocationList()
+        public static async Task<List<Category>> GetCategoryList()
         {
-            SqlParamCollection param = new SqlParamCollection();
+            SQLResult result = await ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_LIST", new TypeParam{ _Type=Types.Category });
 
-            param.Add("@Type", "Location");
+            DataSet ds = result.DataSet;
 
-            DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
+            List<Category> list = new List<Category>();
 
-            List<Location> list = new List<Location>();
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            foreach (DataRow i in ds.Tables[0].Rows)
             {
-                Location l = new Location();
-
-                l.LocationID = Int32.Parse(ds.Tables[0].Rows[i]["LocationID"].ToString());
-                l.LocationName = ds.Tables[0].Rows[i]["LocationName"].ToString();
-                l.Address = ds.Tables[0].Rows[i]["Address"].ToString();
-                l.Description = ds.Tables[0].Rows[i]["Description"].ToString();
-
-                list.Add(l);
+                list.Add(i.ToObject<Category>());
             }
 
             return list;
         }
 
         /// <summary>
-        /// <para>Get Software List</para>
+        /// 사용자 아이피 주소
         /// </summary>
         /// <returns></returns>
-        public static List<Software> GetSoftwareList()
+        public static string GetIP4Address()
         {
-            SqlParamCollection param = new SqlParamCollection();
+            string strIP4Address = String.Empty;
 
-            param.Add("@Type", "Software");
-
-            DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
-
-            List<Software> list = new List<Software>();
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            foreach(IPAddress objIP in Dns.GetHostAddresses(Dns.GetHostName()))
             {
-                Software s = new Software();
-
-                s.SoftwareID = Int32.Parse(ds.Tables[0].Rows[i]["SoftwareID"].ToString());
-                s.SoftwareName = ds.Tables[0].Rows[i]["SoftwareName"].ToString();
-
-                list.Add(s);
+                if(objIP.AddressFamily.ToString() == "InterNetwork")
+                {
+                    strIP4Address = objIP.ToString();
+                    break;
+                }
             }
-
-            return list;
+            return strIP4Address;
         }
     }
 }

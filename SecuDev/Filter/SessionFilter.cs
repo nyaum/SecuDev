@@ -12,7 +12,7 @@ namespace SecuDev.Filter
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpSessionStateBase session = filterContext.HttpContext.Session;
-            if (session["UserID"] == null)
+            if (session["UID"] == null)
             {
                 filterContext.Result = new RedirectResult("/?alertType=Session");
             }

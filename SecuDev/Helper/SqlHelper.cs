@@ -1,5 +1,8 @@
-﻿using SecuDev.Manager;
-using SecuDEV.Manager;
+﻿using CryptoManager;
+using SecuDev;
+using SecuDev.Manager;
+using SingletonManager;
+//using SecuDEV.Manager;
 using System;
 using System.Collections;
 using System.Data;
@@ -9,6 +12,9 @@ namespace FrameWork.DB
 {
     public class SqlHelper : IDisposable
     {
+
+        ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.AES256);
+
         #region GLOVAL VARIABLES
         /// <summary>
         /// ConnectionString

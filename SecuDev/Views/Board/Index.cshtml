@@ -3,7 +3,8 @@
 @using PagedList.Mvc;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string nowDate = Utility.GetNowDate();
+    //string nowDate = Utility.GetNowDate();
+    List<Board> list = ViewBag.list;
 
 }
 <div>
@@ -25,72 +26,27 @@
             </tr>
         </thead>
         <tbody>
-            <tr role="button" href="">
-                <td class="align-middle text-center">56986707</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-success">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-10 11:00:00", 9)</small>
-                </td>
-            </tr>
-            <tr role="button" href="">
-                <td class="align-middle text-center">5</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-secondary">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 9)</small>
-                </td>
-            </tr>
-            <tr role="button" href="">
-                <td class="align-middle text-center">4</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-primary">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-11-10 11:00:00", 9)</small>
-                </td>
-            </tr>
-            <tr role="button" href="">
-                <td class="align-middle text-center">3</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-danger">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2023-12-09 11:00:00", 9)</small>
-                </td>
-            </tr>
-            <tr role="button" href="">
-                <td class="align-middle text-center">2</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-warning">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 9)</small>
-                </td>
-            </tr>
-            <tr role="button" href="">
-                <td class="align-middle text-center">1</td>
-                <td>
-                    <div class="mb-1">
-                        글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목 글 제목
-                    </div>
-                    <span class="badge rounded-pill bg-info">카테고리</span>
-                    <small class="text-secondary">이름</small>
-                    <small class="text-secondary float-end me-3">@Utility.DateTimeFormat("2024-12-09 11:00:00", 9)</small>
-                </td>
-            </tr>
+
+            @*@{
+                foreach (var b in list)
+                {
+
+                    <tr role="button" href="">
+                        <td class="align-middle text-center">@b.BID</td>
+                        <td>
+                            <div class="mb-1">
+                                @b.Title
+                            </div>
+                            <span class="badge rounded-pill" style="background-color:@b.Category.BackgroundColor; color:@b.Category.FontColor;">
+                                @b.Category.CategoryName
+                            </span>
+                            <small class="text-secondary">@b.Users.UserName</small>
+                            <small class="text-secondary float-end me-3">@Utility.DateTimeFormat(b.InsertDate, 9)</small>
+                        </td>
+                    </tr>
+
+                }
+            }*@
         </tbody>
 
     </table>

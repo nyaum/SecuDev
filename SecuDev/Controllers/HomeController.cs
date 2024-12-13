@@ -1,4 +1,4 @@
-﻿using FrameWork.DB;
+﻿//using FrameWork.DB;
 using SecuDev.Helper;
 using SecuDev.Models;
 using System;
@@ -7,19 +7,29 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebAdmin.Models;
+//using WebAdmin.Models;
 using PagedList;
-using SecuDEV.Manager;
+//using SecuDEV.Manager;
 using SecuDev.Filter;
+using CryptoManager;
+using SingletonManager;
+using System.Threading.Tasks;
+using CoreDAL.ORM;
+using CoreDAL.Configuration.Interface;
 
 namespace SecuDev.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string alertType = "")
+        IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
+        ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.SHA256);
+
+        public async Task<ActionResult> Index(string alertType = "")
         {
             // 세션 초기화
             Session.Clear();
+
+            var list = await Utility.GetCategoryList();
 
             ViewBag.alertType = alertType;
 
@@ -29,6 +39,7 @@ namespace SecuDev.Controllers
         [HttpPost]
         public ActionResult Login(FormCollection col)
         {
+
             // 세션 초기화
             Session.Clear();
 
@@ -36,32 +47,50 @@ namespace SecuDev.Controllers
 
             try
             {
-                SqlParamCollection param = new SqlParamCollection();
+                SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_LOGIN", new Users { UID = col["UID"], Password = crypto.Encrypt(col["Password"]) });
 
-                param.Add("@UserID", col["UserID"]);
-                param.Add("@Password", CryptoManager.EncryptBySHA256(col["Password"]));
-
-                DataSet ds = (new Common()).MdlList(param, "PROC_LOGIN");
+                DataSet ds = result.DataSet;
 
                 if (ds.Tables[0].Rows.Count == 1)
                 {
 
-                    Session["UserID"] = ds.Tables[0].Rows[0]["UserID"].ToString();
+                    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
                     Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
                     Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
-
+                    Session["IPAddress"] = Utility.GetIP4Address();
                     Result = ds.Tables[0].Rows[0]["Result"].ToString();
+
                 }
-                else
-                {
-                    Result = "Invalid";
-                }
+
+
+                //SqlParamCollection param = new SqlParamCollection();
+
+                //param.Add("@UID", col["UID"]);
+                //param.Add("@Password", crypto.Encrypt(col["Password"]));
+
+                //DataSet ds = (new Common()).MdlList(param, "PROC_LOGIN");
+
+                //if (ds.Tables[0].Rows.Count == 1)
+                //{
+
+                //    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
+                //    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
+                //    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
+                //    Session["IPAddress"] = Utility.GetIP4Address();
+
+                //    Result = ds.Tables[0].Rows[0]["Result"].ToString();
+                //}
+                //else
+                //{
+                //    Result = "Invalid";
+                //}
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Result = "ERR";
             }
-            
+
 
             return Json(new { Result });
         }

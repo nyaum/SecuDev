@@ -22,7 +22,7 @@ namespace SecuDEV.Manager
             return result;
         }
 
-        public static string EncryptByAES256(string text, string password)
+        private static string EncryptByAES256(string text, string password)
         {
             // 사전 설정
             UTF8Encoding ue = new UTF8Encoding();
@@ -58,7 +58,7 @@ namespace SecuDEV.Manager
             }
             return hex;
         }
-        public static string DecryptByAES256(string cryptotext, string password)
+        private static string DecryptByAES256(string cryptotext, string password)
         {
             // 사전 설정
             UTF8Encoding ue = new UTF8Encoding();
