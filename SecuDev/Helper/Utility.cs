@@ -169,7 +169,15 @@ namespace SecuDev.Helper
         /// <returns></returns>
         public static async Task<List<Category>> GetCategoryList()
         {
-            SQLResult result = await ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_LIST", new TypeParam{ _Type=Types.Category });
+
+            Dictionary<string, object> param = new Dictionary<string, object>
+            {
+
+                { "Type", "Category" }
+
+            };
+
+            SQLResult result = await ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_LIST", param);
 
             DataSet ds = result.DataSet;
 

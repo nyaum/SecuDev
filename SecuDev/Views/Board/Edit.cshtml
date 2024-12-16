@@ -180,10 +180,10 @@
 
         }
 
-        if (CID == "") {
-            alert("카테고리가 선택되지 않았습니다.")
-            return;
-        }
+        //if (CID == "") {
+        //    alert("카테고리가 선택되지 않았습니다.")
+        //    return;
+        //}
 
         if (Title == "") {
             alert("제목을 입력해주세요.")
@@ -246,6 +246,11 @@
                 }
 
             }*@
+            @{ 
+                var list = Utility.GetCategoryList();
+
+                var test = 1;
+            }
         </ul>
 
         <input type="text" id="title" class="form-control border-secondary" />

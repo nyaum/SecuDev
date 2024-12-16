@@ -47,20 +47,34 @@ namespace SecuDev.Controllers
 
             try
             {
-                SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_LOGIN", new Users { UID = col["UID"], Password = crypto.Encrypt(col["Password"]) });
+                Dictionary<string, object> param = new Dictionary<string, object> 
+                {
+                    { "UID", col["UID"] },
+                    { "Password", crypto.Encrypt(col["Password"]) }
+                };
+
+                SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_LOGIN", param);
 
                 DataSet ds = result.DataSet;
 
-                if (ds.Tables[0].Rows.Count == 1)
-                {
+                Users u = new Users();
 
-                    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
-                    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
-                    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
-                    Session["IPAddress"] = Utility.GetIP4Address();
-                    Result = ds.Tables[0].Rows[0]["Result"].ToString();
+                foreach (var i in ds.Tables[0].Rows)
+                {
+                    Console.WriteLine();
 
                 }
+
+                //if (ds.Tables[0].Rows.Count == 1)
+                //{
+
+                //    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
+                //    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
+                //    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
+                //    Session["IPAddress"] = Utility.GetIP4Address();
+                //    Result = ds.Tables[0].Rows[0]["Result"].ToString();
+
+                //}
 
 
                 //SqlParamCollection param = new SqlParamCollection();

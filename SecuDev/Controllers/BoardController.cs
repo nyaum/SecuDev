@@ -1,11 +1,15 @@
-﻿using CryptoManager;
+﻿using CoreDAL.Configuration.Interface;
+using CoreDAL.ORM;
+using CryptoManager;
 using SecuDev.Helper;
+using SecuDev.Models;
 using SingletonManager;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,6 +19,7 @@ namespace SecuDev.Controllers
     public class BoardController : Controller
     {
         ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.AES256);
+        public static IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
 
         // GET: Board
         public ActionResult Index()
@@ -115,6 +120,29 @@ namespace SecuDev.Controllers
             }
 
             return Json(new { });
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public int Write(Board b)
+        {
+            int Rtn = -1;
+
+            Dictionary<string, object> param = new Dictionary<string, object>
+            {
+                { "CID", b.Category.CID },
+                { "UID", b.Title },
+                { "Title", b.Title },
+                { "Content", b.Title },
+                { "FilePath", b.Title },
+                { "FileName", b.Title },
+                { "IPAddress", Session["IPAddress"] }
+            };
+
+            ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_BOARD_WRITE", param);
+
+            return Rtn;
+
         }
 
     }
