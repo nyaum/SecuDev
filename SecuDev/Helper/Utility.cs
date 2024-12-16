@@ -15,27 +15,6 @@ using System.Threading.Tasks;
 
 namespace SecuDev.Helper
 {
-    public enum Types
-    {
-        Category,
-
-    }
-
-    public class TypeParam : SQLParam
-    {
-        public Types _Type { get; set; }
-        [DbParameter]
-        public string type { 
-            get
-            {
-                return _Type.ToString();
-            }
-            set
-            {
-
-            }
-        }
-    }
 
     public class Utility
     {
@@ -164,7 +143,7 @@ namespace SecuDev.Helper
         }
 
         /// <summary>
-        /// <para>Get Location List</para>
+        /// <para>Get Category List</para>
         /// </summary>
         /// <returns></returns>
         public static List<Category> GetCategoryList()
@@ -186,6 +165,7 @@ namespace SecuDev.Helper
             foreach (DataRow i in ds.Tables[0].Rows)
             {
                 list.Add(i.ToObject<Category>());
+
             }
 
             return list;

@@ -81,7 +81,7 @@
                     var parse = JSON.parse(uniqueFileId);
 
                     const formData = new FormData();
-                    formData.append("dbFilePath", parse["dbFilePath"])
+                    formData.append("uniqueFileId", parse["uniqueFileId"])
 
                     const request = new XMLHttpRequest();
                     request.open('POST', '/Board/FileDelete', true);
@@ -176,7 +176,7 @@
         formData.append("Content", Content);
         for (var i = 0; i < FILELIST.length; i++) {
 
-            formData.append("FilePath[" + i + "]", FILELIST[i]["dbFilePath"] + "," + FILELIST[i]["fileName"]);
+            formData.append("FilePath[" + i + "]", FILELIST[i]["uniqueFileId"] + "," + FILELIST[i]["FileName"]);
 
         }
 
@@ -195,7 +195,7 @@
             return;
         }
 
-        
+
         $.ajax({
             type: "POST",
             contentType: false,
@@ -213,7 +213,7 @@
                     console.log(rtn);
 
                 }
-                else if (rtn == -1 ) {
+                else if (rtn == -1) {
 
                     alert("글 작성중 DB 오류가 발생했습니다.")
 

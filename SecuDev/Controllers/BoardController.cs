@@ -1,6 +1,8 @@
 ﻿using CoreDAL.Configuration.Interface;
 using CoreDAL.ORM;
+using CoreDAL.ORM.Extensions;
 using CryptoManager;
+using PagedList;
 using SecuDev.Helper;
 using SecuDev.Models;
 using SingletonManager;
@@ -19,12 +21,28 @@ namespace SecuDev.Controllers
     public class BoardController : Controller
     {
         ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.AES256);
-        public static IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
+        IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
 
         // GET: Board
-        public ActionResult Index()
+        public ActionResult Index(int? Page, int PageSize = 10)
         {
-            return View();
+
+            int PageNo = Page ?? 1;
+
+            List<Board> list = new List<Board>();
+
+            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_LIST");
+
+            DataSet ds = result.DataSet;
+
+            foreach (DataRow b in ds.Tables[0].Rows)
+            {
+                list.Add(b.ToObject<Board>());
+            }
+
+            ViewBag.list = list;
+
+            return View(list.ToPagedList(PageNo, PageSize));
         }
 
         public ActionResult Edit()
@@ -102,20 +120,20 @@ namespace SecuDev.Controllers
 
             }
 
-            return Json(new { dbFilePath, altFileName });
+            return Json(new { uniqueFileId = dbFilePath, FileName = altFileName });
         }
 
         [HttpPost]
-        public ActionResult FileDelete(string dbFilePath) {
+        public ActionResult FileDelete(string uniqueFileId) {
 
             string sRtn = "Fail";
 
-            dbFilePath = crypto.Decrypt(dbFilePath);
+            uniqueFileId = $"{Server.MapPath("/")}/Upload/File/" + crypto.Decrypt(uniqueFileId);
 
-            if (System.IO.File.Exists($"{Server.MapPath("/")}/Upload/File/" + dbFilePath))
+            if (System.IO.File.Exists(uniqueFileId))
             {
 
-                System.IO.File.Delete($"{Server.MapPath("/")}/Upload/File/" + dbFilePath);
+                System.IO.File.Delete(uniqueFileId);
 
             }
 
@@ -131,17 +149,20 @@ namespace SecuDev.Controllers
             string dbFilePath = "";
             string FileName = "";
 
-            for (int i = 0; i < FilePath.Length; i++)
+            if (FilePath != null)
             {
-                if (i == 0)
+                for (int i = 0; i < FilePath.Length; i++)
                 {
-                    dbFilePath = FilePath[i].Split(',')[0];
-                    FileName = FilePath[i].Split(',')[1];
-                }
-                else
-                {
-                    dbFilePath += "|" + FilePath[i].Split(',')[0];
-                    FileName += "|" + FilePath[i].Split(',')[1];
+                    if (i == 0)
+                    {
+                        dbFilePath = FilePath[i].Split(',')[0];
+                        FileName = FilePath[i].Split(',')[1];
+                    }
+                    else
+                    {
+                        dbFilePath += "|" + FilePath[i].Split(',')[0];
+                        FileName += "|" + FilePath[i].Split(',')[1];
+                    }
                 }
             }
 
