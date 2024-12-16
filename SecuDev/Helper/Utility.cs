@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Web;
 using WebAdmin.Models;
 
@@ -136,56 +137,107 @@ namespace SecuDev.Helper
         /// <para>Get Location List</para>
         /// </summary>
         /// <returns></returns>
-        public static List<Location> GetLocationList()
+        public static List<Category> GetCategoryList()
         {
+
             SqlParamCollection param = new SqlParamCollection();
 
-            param.Add("@Type", "Location");
+            param.Add("@Type", "Category");
 
             DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
 
-            List<Location> list = new List<Location>();
+
+            List<Category> list = new List<Category>();
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                Location l = new Location();
+                Category c = new Category();
 
-                l.LocationID = Int32.Parse(ds.Tables[0].Rows[i]["LocationID"].ToString());
-                l.LocationName = ds.Tables[0].Rows[i]["LocationName"].ToString();
-                l.Address = ds.Tables[0].Rows[i]["Address"].ToString();
-                l.Description = ds.Tables[0].Rows[i]["Description"].ToString();
+                c.CID = Int32.Parse(ds.Tables[0].Rows[i]["CID"].ToString());
+                c.CategoryName = ds.Tables[0].Rows[i]["CategoryName"].ToString();
+                c.BackgroundColor = ds.Tables[0].Rows[i]["BackgroundColor"].ToString();
+                c.FontColor = ds.Tables[0].Rows[i]["FontColor"].ToString();
 
-                list.Add(l);
+                list.Add(c);
+
             }
 
             return list;
         }
 
         /// <summary>
+        /// 사용자 아이피 주소
+        /// </summary>
+        /// <returns></returns>
+        public static string GetIP4Address()
+        {
+            string strIP4Address = String.Empty;
+
+            foreach (IPAddress objIP in Dns.GetHostAddresses(Dns.GetHostName()))
+            {
+                if (objIP.AddressFamily.ToString() == "InterNetwork")
+                {
+                    strIP4Address = objIP.ToString();
+                    break;
+                }
+            }
+            return strIP4Address;
+        }
+
+        /// <summary>
+        /// <para>Get Location List</para>
+        /// </summary>
+        /// <returns></returns>
+        //public static List<Location> GetLocationList()
+        //{
+        //    SqlParamCollection param = new SqlParamCollection();
+
+        //    param.Add("@Type", "Location");
+
+        //    DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
+
+        //    List<Location> list = new List<Location>();
+
+        //    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        //    {
+        //        Location l = new Location();
+
+        //        l.LocationID = Int32.Parse(ds.Tables[0].Rows[i]["LocationID"].ToString());
+        //        l.LocationName = ds.Tables[0].Rows[i]["LocationName"].ToString();
+        //        l.Address = ds.Tables[0].Rows[i]["Address"].ToString();
+        //        l.Description = ds.Tables[0].Rows[i]["Description"].ToString();
+
+        //        list.Add(l);
+        //    }
+
+        //    return list;
+        //}
+
+        /// <summary>
         /// <para>Get Software List</para>
         /// </summary>
         /// <returns></returns>
-        public static List<Software> GetSoftwareList()
-        {
-            SqlParamCollection param = new SqlParamCollection();
+        //public static List<Software> GetSoftwareList()
+        //{
+        //    SqlParamCollection param = new SqlParamCollection();
 
-            param.Add("@Type", "Software");
+        //    param.Add("@Type", "Software");
 
-            DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
+        //    DataSet ds = (new Common()).MdlList(param, "PROC_LIST");
 
-            List<Software> list = new List<Software>();
+        //    List<Software> list = new List<Software>();
 
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                Software s = new Software();
+        //    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        //    {
+        //        Software s = new Software();
 
-                s.SoftwareID = Int32.Parse(ds.Tables[0].Rows[i]["SoftwareID"].ToString());
-                s.SoftwareName = ds.Tables[0].Rows[i]["SoftwareName"].ToString();
+        //        s.SoftwareID = Int32.Parse(ds.Tables[0].Rows[i]["SoftwareID"].ToString());
+        //        s.SoftwareName = ds.Tables[0].Rows[i]["SoftwareName"].ToString();
 
-                list.Add(s);
-            }
+        //        list.Add(s);
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
     }
 }

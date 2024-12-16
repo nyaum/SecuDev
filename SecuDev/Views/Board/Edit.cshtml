@@ -1,20 +1,19 @@
 ﻿@using SecuDev.Models;
 @using SecuDev.Helper;
 @using PagedList.Mvc;
+<!--@@using SecuDEV.Manager;-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string nowDate = Utility.GetNowDate();
+    //string nowDate = Utility.GetNowDate();
 
 }
-
 <script>
 
+    let FILELIST = [];
+
+    let editor;
+
     $().ready(function () {
-        
-        var myFiles = {
-            'myuniquefileid': 'limbo',
-            'myotheruniquefileid': 'local'
-        };
 
         FilePond.registerPlugin(FilePondPluginFileValidateSize);
 
@@ -32,9 +31,6 @@
         FilePond.setOptions({
             server: {
                 process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-
-                    // 첨부파일 Input 호출
-                    var input = document.getElementById('fileUpload');
 
                     const formData = new FormData();
 
@@ -54,12 +50,18 @@
 
                             load(request.responseText);
 
+
+                            // 인코딩된 파일 정보 보내기
+                            //FILELIST.push(request.responseText)
+                            FILELIST.push(JSON.parse(request.responseText));
+
                         } else {
 
                             error('error! > ' + request.status);
 
                         }
                     };
+
                     request.send(formData);
 
                     return {
@@ -74,21 +76,48 @@
                 },
                 revert: (uniqueFileId, load, error) => {
 
-                    const formData = new FormData();
+                    var parse = JSON.parse(uniqueFileId);
 
-                    const origin = myFiles[uniqueFileId];
+                    const formData = new FormData();
+                    formData.append("uniqueFileId", parse["uniqueFileId"])
 
                     const request = new XMLHttpRequest();
                     request.open('POST', '/Board/FileDelete', true);
+
                     request.send(formData);
 
-                    console.log(uniqueFieId)
+                    const index = FILELIST.indexOf(uniqueFileId);
+
+                    if (index > -1) {
+                        FILELIST.splice(index, 1)
+                    }
 
                     error('oh my goodness');
 
                     load();
+
                 },
             },
+        });
+
+        editor = new toastui.Editor({
+            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
+            height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+            initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+            previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
+            language: 'ko',                          // 언어 설정
+            hideModeSwitch: true,
+            toolbarItems: [
+                ['heading', 'bold', 'italic', 'strike'],
+                ['hr', 'quote'],
+                ['ul', 'ol', 'task', 'indent', 'outdent'],
+                ['table', 'image', 'link',
+                    {
+                        el: btnUpload(),
+                        tooltip: '업로드'
+                    }
+                ],
+            ]
         });
 
         function btnUpload() {
@@ -110,27 +139,88 @@
 
         }
 
-        const editor = new toastui.Editor({
-            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
-            height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
-            initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-            previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
-            language: 'ko',                          // 언어 설정
-            hideModeSwitch: true,
-            toolbarItems: [
-                ['heading', 'bold', 'italic', 'strike'],
-                ['hr', 'quote'],
-                ['ul', 'ol', 'task', 'indent', 'outdent'],
-                ['table', 'image', 'link',
-                    {
-                        el: btnUpload(),
-                        tooltip: '업로드'
-                    }
-                ],
-            ]
+
+        // 카테고리 선택
+        $(".dropdown-toggle[changeable=true]").next(".dropdown-menu").children().on("click", function () {
+
+            $("#category").text($(this).text())
+            $("#category").attr("data-value", $(this).attr("data-value"))
+
         });
 
     })
+
+
+    // 글 작성
+    function fnSubmit() {
+
+
+        var CID = "";
+        var Title = "";
+        var Content = "";
+        var Markdown = "";
+
+        CID = $("#category[name=category]").attr('data-value');
+        Title = $("#title").val();
+        Content = editor.getHTML();
+        Markdown = editor.getMarkdown();
+
+        const formData = new FormData();
+
+        formData.append("CID", CID);
+        formData.append("Title", Title);
+        formData.append("Content", Content);
+        for (var i = 0; i < FILELIST.length; i++) {
+
+            formData.append("FilePath[" + i + "]", FILELIST[i]["uniqueFileId"] + "," + FILELIST[i]["FileName"]);
+
+        }
+
+        if (CID == "") {
+            alert("카테고리가 선택되지 않았습니다.")
+            return;
+        }
+
+        if (Title == "") {
+            alert("제목을 입력해주세요.")
+            return;
+        }
+
+        if (Content == "") {
+            alert("글 내용을 입력해주세요.")
+            return;
+        }
+
+
+        $.ajax({
+            type: "POST",
+            contentType: false,
+            processData: false,
+            url: "/Board/Write",
+            data: formData,
+            success: function (rtn) {
+
+                if (rtn != -1) {
+
+                    alert("정상 등록되었습니다.");
+
+                    // 이동할 페이지
+
+                    console.log(rtn);
+
+                }
+                else if (rtn == -1) {
+
+                    alert("글 작성중 DB 오류가 발생했습니다.")
+
+                    return
+                }
+
+            }
+        })
+
+    }
+
 
 </script>
 
@@ -138,18 +228,23 @@
 <div style="height:60vh;">
 
     <div class="input-group">
-        <button type="button" class="btn btn-light dropdown-toggle border-secondary" data-bs-toggle="dropdown">
-            카테고리
+        <button type="button" class="btn btn-light dropdown-toggle border-secondary" data-bs-toggle="dropdown" changeable="true">
+            <span id="category" class="px-2" data-value="" name="category">카테고리</span>
         </button>
 
         <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity)) !important ">
-            <li><a class="dropdown-item">카테고리1</a></li>
-            <li><a class="dropdown-item">카테고리2</a></li>
-            <li><a class="dropdown-item">카테고리3</a></li>
-            <li><a class="dropdown-item">카테고리4</a></li>
+            @{
+                    foreach (var c in Utility.GetCategoryList())
+                    {
+                        <li role="button" data-value="@c.CID">
+                            <a class="dropdown-item">@c.CategoryName</a>
+                        </li>
+                    }
+
+                }
         </ul>
 
-        <input type="text" class="form-control border-secondary" />
+        <input type="text" id="title" class="form-control border-secondary" />
     </div>
 
     <hr />
@@ -159,19 +254,20 @@
     <hr />
 
     <div class="d-flex">
-        <div class="input-group w-75">
+        <div class="input-group w-50">
             <input type="text" class="form-control border-secondary" placeholder="알림을 보낼 사용자 추가" value="" readonly />
             <button type="button" class="btn btn-light border-secondary">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
         <div class="ms-auto">
-            <button class="btn btn-light shadow-sm text-primary">
+            <button type="button" class="btn btn-light shadow-sm text-primary" onclick="javascript: fnSubmit();">
                 <i class="fa-solid fa-check me-2"></i>
                 작성
             </button>
         </div>
     </div>
+
 </div>
 
 <!-- File Popup -->
@@ -184,6 +280,10 @@
                 </div>
                 <div class="modal-body">
                     <input type="file" id="fileUpload" multiple />
+                </div>
+                <div>
+                    <span id="filePath"></span>
+                    <span id="fileName"></span>
                 </div>
             </div>
         </div>

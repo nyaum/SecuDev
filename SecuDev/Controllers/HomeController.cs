@@ -38,7 +38,7 @@ namespace SecuDev.Controllers
             {
                 SqlParamCollection param = new SqlParamCollection();
 
-                param.Add("@UserID", col["UserID"]);
+                param.Add("@UID", col["UID"]);
                 param.Add("@Password", CryptoManager.EncryptBySHA256(col["Password"]));
 
                 DataSet ds = (new Common()).MdlList(param, "PROC_LOGIN");
@@ -46,9 +46,10 @@ namespace SecuDev.Controllers
                 if (ds.Tables[0].Rows.Count == 1)
                 {
 
-                    Session["UserID"] = ds.Tables[0].Rows[0]["UserID"].ToString();
+                    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
                     Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
                     Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
+                    Session["IPAddress"] = Utility.GetIP4Address();
 
                     Result = ds.Tables[0].Rows[0]["Result"].ToString();
                 }

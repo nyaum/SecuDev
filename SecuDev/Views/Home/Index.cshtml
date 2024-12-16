@@ -38,14 +38,14 @@
 
         function fnLogin() {
 
-            var UserID = $("#UserID").val();
+            var UID = $("#UID").val();
             var Password = $("#Password").val();
 
-            if (UserID == "") {
+            if (UID == "") {
 
-                fnToast("UserID", 0);
+                fnToast("UID", 0);
 
-                $("#UserID").focus();
+                $("#UID").focus();
 
                 return;
             }
@@ -59,7 +59,7 @@
                 return;
             }
 
-            const Param = "UserID=" + String(UserID) + "&Password=" + String(Password);
+            const Param = "UID=" + String(UID) + "&Password=" + String(Password);
 
             $.ajax({
                 type: "POST",
@@ -98,7 +98,7 @@
                     case "Invalid":
                         msg = "유효하지 않은 사용자 이름, 또는 비밀번호 오류 입니다.";
                         break;
-                    case "UserID":
+                    case "UID":
                         msg = "아이디를 다시 입력해주세요.";
                         break;
                     case "Password":
@@ -165,7 +165,7 @@
                             <span class="input-group-text bg-white border-end-0 ps-3">
                                 <i class="fa-solid fa-user"></i>
                             </span>
-                            <input type="text" id="UserID" class="form-control form-control-lg border-start-0" name="UserID" autocomplete="off" ent="fnLogin" />
+                            <input type="text" id="UID" class="form-control form-control-lg border-start-0" name="UID" autocomplete="off" ent="fnLogin" />
                         </div>
                     </div>
 

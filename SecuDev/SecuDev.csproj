@@ -146,6 +146,8 @@
     <Compile Include="Helper\Utility.cs" />
     <Compile Include="Manager\CryptoManager.cs" />
     <Compile Include="Manager\IOManager.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Common.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Software.cs" />

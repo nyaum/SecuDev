@@ -1,5 +1,6 @@
 ﻿using FrameWork.DB;
 using SecuDev.Helper;
+using SecuDev.Models;
 using SecuDEV.Manager;
 using System;
 using System.Collections.Generic;
@@ -114,6 +115,45 @@ namespace SecuDev.Controllers
             }
 
             return Json(new { });
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public int Write(Board b, string[] FilePath)
+        {
+
+            int Rtn = -1;
+
+            string dbFilePath = "";
+            string FileName = "";
+
+            for (int i = 0; i < FilePath.Length; i++)
+            {
+                if (i == 0)
+                {
+                    dbFilePath = FilePath[i].Split(',')[0];
+                    FileName = FilePath[i].Split(',')[1];
+                }
+                else
+                {
+                    dbFilePath += "|" + FilePath[i].Split(',')[0];
+                    FileName += "|" + FilePath[i].Split(',')[1];
+                }
+            }
+
+            SqlParamCollection param = new SqlParamCollection();
+
+            param.Add("@CID", b.Category.CID);
+            param.Add("@UID", Session["UID"]);
+            param.Add("@IPAddress", Session["IPAddress"]);
+            param.Add("@Title", b.Title);
+            param.Add("@Content", b.Content);
+            param.Add("@FilePath", dbFilePath);
+            param.Add("@FileName", FileName);
+
+            Rtn = (new Common()).MdlRegIntRtn(param, "PROC_BOARD_WRITE");
+
+            return Rtn;
         }
 
     }
