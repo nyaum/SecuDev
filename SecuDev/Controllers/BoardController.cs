@@ -147,25 +147,28 @@ namespace SecuDev.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public int Write(Board b, string[] FilePath)
+        public string Write(Board b, string[] FilePath)
         {
 
-            int Rtn = -1;
+            string Rtn = "";
 
             string dbFilePath = "";
             string FileName = "";
 
-            for (int i = 0; i < FilePath.Length; i++)
+            if (FilePath != null)
             {
-                if (i == 0)
+                for (int i = 0; i < FilePath.Length; i++)
                 {
-                    dbFilePath = FilePath[i].Split(',')[0];
-                    FileName = FilePath[i].Split(',')[1];
-                }
-                else
-                {
-                    dbFilePath += "|" + FilePath[i].Split(',')[0];
-                    FileName += "|" + FilePath[i].Split(',')[1];
+                    if (i == 0)
+                    {
+                        dbFilePath = FilePath[i].Split(',')[0];
+                        FileName = FilePath[i].Split(',')[1];
+                    }
+                    else
+                    {
+                        dbFilePath += "|" + FilePath[i].Split(',')[0];
+                        FileName += "|" + FilePath[i].Split(',')[1];
+                    }
                 }
             }
 
@@ -179,7 +182,7 @@ namespace SecuDev.Controllers
             param.Add("@FilePath", dbFilePath);
             param.Add("@FileName", FileName);
 
-            Rtn = (new Common()).MdlRegIntRtn(param, "PROC_BOARD_WRITE");
+            Rtn = (new Common()).MdlRegRtn(param, "PROC_BOARD_WRITE");
 
             return Rtn;
         }
