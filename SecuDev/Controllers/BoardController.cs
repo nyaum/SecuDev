@@ -1,4 +1,5 @@
 ﻿using FrameWork.DB;
+using PagedList;
 using SecuDev.Helper;
 using SecuDev.Models;
 using SecuDEV.Manager;
@@ -16,9 +17,36 @@ namespace SecuDev.Controllers
     public class BoardController : Controller
     {
         // GET: Board
-        public ActionResult Index()
+        public ActionResult Index(int? Page, int PageSize = 10)
         {
-            return View();
+
+            int PageNo = Page ?? 1;
+
+            SqlParamCollection param = new SqlParamCollection();
+
+            DataSet ds = (new Common().MdlList(param, "PROC_BOARD_LIST"));
+
+            List<Board> list = new List<Board>();
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                Board b = new Board();
+
+                b.BID = Int32.Parse(ds.Tables[0].Rows[i]["BID"].ToString());
+                b.Category.CID = Int32.Parse(ds.Tables[0].Rows[i]["CID"].ToString());
+                b.Category.CategoryName = ds.Tables[0].Rows[i]["CategoryName"].ToString();
+                b.Category.BackgroundColor = ds.Tables[0].Rows[i]["BackgroundColor"].ToString();
+                b.Category.FontColor = ds.Tables[0].Rows[i]["FontColor"].ToString();
+                b.Users.UID = ds.Tables[0].Rows[i]["UID"].ToString();
+                b.Users.UserName = ds.Tables[0].Rows[i]["UserName"].ToString();
+                b.Title = ds.Tables[0].Rows[i]["Title"].ToString();
+
+                list.Add(b);
+            }
+
+            ViewBag.list = list;
+
+            return View(list.ToPagedList(PageNo, PageSize));
         }
 
         public ActionResult Edit()
