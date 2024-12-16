@@ -1,5 +1,6 @@
 ﻿using FrameWork.DB;
 using SecuDev.Helper;
+using SecuDEV.Manager;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -56,7 +57,7 @@ namespace SecuDev.Controllers
                         {
                             var fileName = Path.GetFileName(formFile.FileName);
                             var fileFullPath = Path.Combine(uploadDir + fileName);
-                            var fileDir = Path.Combine(dir + fileName);
+                            var fileDir = CryptoManager.AESEncrypt256(Path.Combine(dir + fileName));
 
                             int filecnt = 1;
                             string newFileName = string.Empty;
@@ -66,7 +67,7 @@ namespace SecuDev.Controllers
                                 var tmp = formFile.FileName.Substring(0, idx);
                                 newFileName = tmp + String.Format("({0})", filecnt++) + formFile.FileName.Substring(idx);
                                 fileFullPath = uploadDir + newFileName;
-                                fileDir = dir + newFileName;
+                                fileDir = CryptoManager.AESEncrypt256(dir + newFileName);
                             }
 
                             formFile.SaveAs(fileFullPath);
@@ -94,21 +95,21 @@ namespace SecuDev.Controllers
 
             }
 
-            return Json(new { dbFilePath, altFileName });
+            return Json(new { uniqueFileId = dbFilePath, FileName = altFileName });
         }
 
         [HttpPost]
-        public ActionResult FileDelete(string dbFilePath)
+        public ActionResult FileDelete(string uniqueFileId)
         {
 
             string sRtn = "Fail";
 
-            dbFilePath = crypto.Decrypt(dbFilePath);
+            uniqueFileId = $"{Server.MapPath("/")}/Upload/File/" + CryptoManager.AESDecrypt256(uniqueFileId);
 
-            if (System.IO.File.Exists($"{Server.MapPath("/")}/Upload/File/" + dbFilePath))
+            if (System.IO.File.Exists(uniqueFileId))
             {
 
-                System.IO.File.Delete($"{Server.MapPath("/")}/Upload/File/" + dbFilePath);
+                System.IO.File.Delete(uniqueFileId);
 
             }
 
