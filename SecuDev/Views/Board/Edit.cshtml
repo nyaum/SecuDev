@@ -180,10 +180,10 @@
 
         }
 
-        //if (CID == "") {
-        //    alert("카테고리가 선택되지 않았습니다.")
-        //    return;
-        //}
+        if (CID == "") {
+            alert("카테고리가 선택되지 않았습니다.")
+            return;
+        }
 
         if (Title == "") {
             alert("제목을 입력해주세요.")
@@ -237,15 +237,6 @@
         </button>
 
         <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity)) !important ">
-            @*@{
-            foreach (var c in Utility.GetCategoryList())
-            {
-                <li role="button" data-value="@c.CID">
-                    <a class="dropdown-item">@c.CategoryName</a>
-                </li>
-            }
-
-        }*@
             @{
                 foreach (var c in Utility.GetCategoryList())
                 {
@@ -253,7 +244,6 @@
                         <a class="dropdown-item">@c.CategoryName</a>
                     </li>
                 }
-
             }
         </ul>
 

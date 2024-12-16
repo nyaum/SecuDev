@@ -128,14 +128,31 @@ namespace SecuDev.Controllers
         {
             int Rtn = -1;
 
+            string dbFilePath = "";
+            string FileName = "";
+
+            for (int i = 0; i < FilePath.Length; i++)
+            {
+                if (i == 0)
+                {
+                    dbFilePath = FilePath[i].Split(',')[0];
+                    FileName = FilePath[i].Split(',')[1];
+                }
+                else
+                {
+                    dbFilePath += "|" + FilePath[i].Split(',')[0];
+                    FileName += "|" + FilePath[i].Split(',')[1];
+                }
+            }
+
             Dictionary<string, object> param = new Dictionary<string, object>
             {
                 { "CID", b.Category.CID },
                 { "UID", Session["UID"] },
                 { "Title", b.Title },
                 { "Content", b.Content },
-                { "FilePath", b.Title },
-                { "FileName", b.Title },
+                { "FilePath", dbFilePath },
+                { "FileName", FileName },
                 { "IPAddress", Session["IPAddress"] }
             };
 
