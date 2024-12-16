@@ -238,6 +238,15 @@
 
         <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity)) !important ">
             @*@{
+            foreach (var c in Utility.GetCategoryList())
+            {
+                <li role="button" data-value="@c.CID">
+                    <a class="dropdown-item">@c.CategoryName</a>
+                </li>
+            }
+
+        }*@
+            @{
                 foreach (var c in Utility.GetCategoryList())
                 {
                     <li role="button" data-value="@c.CID">
@@ -245,11 +254,6 @@
                     </li>
                 }
 
-            }*@
-            @{ 
-                var list = Utility.GetCategoryList();
-
-                var test = 1;
             }
         </ul>
 

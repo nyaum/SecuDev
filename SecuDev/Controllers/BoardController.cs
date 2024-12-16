@@ -124,22 +124,25 @@ namespace SecuDev.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public int Write(Board b)
+        public int Write(Board b, string[] FilePath)
         {
             int Rtn = -1;
 
             Dictionary<string, object> param = new Dictionary<string, object>
             {
                 { "CID", b.Category.CID },
-                { "UID", b.Title },
+                { "UID", Session["UID"] },
                 { "Title", b.Title },
-                { "Content", b.Title },
+                { "Content", b.Content },
                 { "FilePath", b.Title },
                 { "FileName", b.Title },
                 { "IPAddress", Session["IPAddress"] }
             };
 
-            ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_BOARD_WRITE", param);
+            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_WRITE", param);
+
+            DataSet ds = result.DataSet;
+
 
             return Rtn;
 

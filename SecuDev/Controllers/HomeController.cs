@@ -24,12 +24,12 @@ namespace SecuDev.Controllers
         IDatabaseSetup ConnDB = Singletons.Instance.GetKeyedSingleton<IDatabaseSetup>(MvcApplication.ConnDB);
         ICryptoManager crypto = Singletons.Instance.GetKeyedSingleton<ICryptoManager>(MvcApplication.SHA256);
 
-        public async Task<ActionResult> Index(string alertType = "")
+        public ActionResult Index(string alertType = "")
         {
             // 세션 초기화
             Session.Clear();
 
-            var list = await Utility.GetCategoryList();
+            var list = Utility.GetCategoryList();
 
             ViewBag.alertType = alertType;
 
@@ -57,24 +57,16 @@ namespace SecuDev.Controllers
 
                 DataSet ds = result.DataSet;
 
-                Users u = new Users();
-
-                foreach (var i in ds.Tables[0].Rows)
+                if (ds.Tables[0].Rows.Count == 1)
                 {
-                    Console.WriteLine();
+
+                    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
+                    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
+                    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
+                    Session["IPAddress"] = Utility.GetIP4Address();
+                    Result = ds.Tables[0].Rows[0]["Result"].ToString();
 
                 }
-
-                //if (ds.Tables[0].Rows.Count == 1)
-                //{
-
-                //    Session["UID"] = ds.Tables[0].Rows[0]["UID"].ToString();
-                //    Session["UserName"] = ds.Tables[0].Rows[0]["UserName"].ToString();
-                //    Session["AuthorityLevel"] = ds.Tables[0].Rows[0]["AuthorityLevel"].ToString();
-                //    Session["IPAddress"] = Utility.GetIP4Address();
-                //    Result = ds.Tables[0].Rows[0]["Result"].ToString();
-
-                //}
 
 
                 //SqlParamCollection param = new SqlParamCollection();

@@ -167,7 +167,7 @@ namespace SecuDev.Helper
         /// <para>Get Location List</para>
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<Category>> GetCategoryList()
+        public static List<Category> GetCategoryList()
         {
 
             Dictionary<string, object> param = new Dictionary<string, object>
@@ -177,7 +177,7 @@ namespace SecuDev.Helper
 
             };
 
-            SQLResult result = await ConnDB.DAL.ExecuteProcedureAsync(ConnDB, "PROC_LIST", param);
+            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_LIST", param);
 
             DataSet ds = result.DataSet;
 
