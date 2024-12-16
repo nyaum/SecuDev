@@ -30,7 +30,7 @@ namespace SecuDev
             ICryptoManager EncAES256 = new AES256("secu13579");
             Singletons.Instance.AddKeyedSingleton<ICryptoManager>(AES256, EncAES256);
 
-            IDatabaseSetup setup = new DatabaseSetup(DatabaseType.MSSQL, new IniFileHelper($"{Server.MapPath("/")}" + "Upload\\Data\\Setup.ini"), "SECUDEV", EncAES256);
+            IDatabaseSetup setup = new DatabaseSetup(DatabaseType.MSSQL, new IniFileHelper($"{Server.MapPath("/")}" + "Upload\\Data\\WebSetup.ini"), "SECUDEV", EncAES256);
             IDbConnectionInfo info = new MsSqlConnectionInfo { Server = "127.0.0.1", UserId = "sa", Password = "s1access!", Database = "SECUDEV" };
             Singletons.Instance.AddKeyedSingleton<IDatabaseSetup>(ConnDB, setup);
             setup.UpdateConnectionInfo(info);

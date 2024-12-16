@@ -9,16 +9,16 @@
     });
 
     // 드랍다운 이벤트 (pgcnt 요소 유무 확인)
-    $("select[pgcnt]").on("change", function () {
+    //$("select[pgcnt]").on("change", function () {
 
-        var p = $(this).find(":selected").val()
+    //    var p = $(this).find(":selected").val()
 
-        $("#frmPage > #frmPage").val(1)
-        $("#frmPage > #frm" + $(this).attr("id")).val(p);
+    //    $("#frmPage > #frmPage").val(1)
+    //    $("#frmPage > #frm" + $(this).attr("id")).val(p);
 
-        $("#frmPage").submit();
+    //    $("#frmPage").submit();
 
-    })
+    //})
 
 
     // 페이지 이동 이벤트 (role = button 인지 체크)

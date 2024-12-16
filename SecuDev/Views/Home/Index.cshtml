@@ -151,41 +151,46 @@
         </div>
     </div>
 
-    <div class="container align-middle">
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-10 mx-auto">
+                <div class="jumbotron">
+                    <form id="Loginfrm" action="/Home/Login" method="post">
+                        <div id="Login" class="card container-fluid p-0 w-50 shadow">
+                            <div class="card-header bg-white">
+                                <big><b>로그인</b></big>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="mb-4">
+                                    <label class="mb-2"><b>아이디</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0 ps-3">
+                                            <i class="fa-solid fa-user"></i>
+                                        </span>
+                                        <input type="text" id="UID" class="form-control form-control-lg border-start-0" name="UID" autocomplete="off" ent="fnLogin" />
+                                    </div>
+                                </div>
 
-        <form id="Loginfrm" action="/Home/Login" method="post">
-            <div id="Login" class="card container-fluid p-0 w-50 shadow">
-                <div class="card-header bg-white">
-                    <big><b>로그인</b></big>
-                </div>
-                <div class="card-body p-4">
-                    <div class="mb-4">
-                        <label class="mb-2"><b>아이디</b></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0 ps-3">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-                            <input type="text" id="UID" class="form-control form-control-lg border-start-0" name="UID" autocomplete="off" ent="fnLogin" />
+                                <div class="mb-5">
+                                    <label class="mb-2"><b>비밀번호</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0 ps-3">
+                                            <i class="fa-solid fa-lock"></i>
+                                        </span>
+                                        <input type="password" id="Password" class="form-control form-control-lg border-start-0" name="Password" autocomplete="off" ent="fnLogin" />
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <div>
+                                    <input id="confirm" type="button" class="btn btn-primary float-end col-6" ent="fnLogin" onclick="javascript: fnLogin();" value="로그인" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="mb-5">
-                        <label class="mb-2"><b>비밀번호</b></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0 ps-3">
-                                <i class="fa-solid fa-lock"></i>
-                            </span>
-                            <input type="password" id="Password" class="form-control form-control-lg border-start-0" name="Password" autocomplete="off" ent="fnLogin" />
-                        </div>
-                    </div>
-
-                    <hr />
-                    <div>
-                        <input id="confirm" type="button" class="btn btn-primary float-end col-6" ent="fnLogin" onclick="javascript: fnLogin();" value="로그인" />
-                    </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 
 </body>

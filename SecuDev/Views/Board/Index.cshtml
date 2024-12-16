@@ -10,29 +10,58 @@
 }
 <script>
     $().ready(function () {
+        // 카테고리 선택 
+        $(".dropdown-toggle[changeable=true]").next(".dropdown-menu").children().on("click", function () {
 
-        $("#PageSize").val("@Model.PageSize").prop("selected", true);
+            $("#category").text($(this).text())
+            $("#category").attr("data-value", $(this).attr("data-value"))
 
+        });
     })
+
+
 </script>
 <div>
+    <div class="row">
 
-    <div class="float-end pb-2">
-        <select id="PageSize" class="form-select form-select-sm" pgcnt>
-            <option selected value="10">10 건</option>
-            <option value="20">20 건</option>
-            <option value="30">30 건</option>
-        </select>
+        <div class="col-7">
+
+            <div class="input-group">
+                <button type="button" class="btn btn-light dropdown-toggle border-secondary" data-bs-toggle="dropdown" changeable="true">
+                    <span id="category" class="px-2" data-value="" name="category">카테고리</span>
+                </button>
+
+                <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: rgba(var(--bs-secondary-rgb),var(--bs-bg-opacity)) !important ">
+                    @{
+                        foreach (var c in Utility.GetCategoryList())
+                        {
+                            <li role="button" data-value="@c.CID">
+                                <a class="dropdown-item">@c.CategoryName</a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+                <input type="text" id="title" class="form-control border-secondary" placeholder="제목" />
+                <input type="text" id="title" class="form-control border-secondary" placeholder="작성자" />
+                <button type="button" class="btn btn-light border-secondary">검색</button>
+            </div>
+
+        </div>
+
+        <div class="col-5">
+            <button role="button" class="btn btn-light shadow-sm float-end text-primary" href="/Board/Edit">
+                <i class="fa-solid fa-pen me-2"></i>
+                작성
+            </button>
+        </div>
+
     </div>
 
-    <table class="table table-hover shadow-sm ">
+    <hr class="mb-0" />
 
-        <thead>
-            <tr>
-                <th width="5%"></th>
-                <th>제목</th>
-            </tr>
-        </thead>
+    <table class="table table-hover table-light" style="font-size:15px">
+
         <tbody>
 
             @{
@@ -40,7 +69,7 @@
                 {
 
                     <tr role="button" href="">
-                        <td class="align-middle text-center">@b.BID</td>
+                        <td width="5%" class="align-middle text-center">@b.BID</td>
                         <td>
                             <div class="mb-1">
                                 @b.Title
@@ -58,13 +87,7 @@
         </tbody>
 
     </table>
-    <div class="pt-3">
-        @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page, Model.PageSize }))
-    </div>
 </div>
 <div>
-    <button role="button" class="btn btn-light shadow-sm float-end text-primary" href="/Board/Edit">
-        <i class="fa-solid fa-pen me-2"></i>
-        글쓰기
-    </button>
+    @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page, Model.PageSize }))
 </div>

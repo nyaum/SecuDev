@@ -37,7 +37,14 @@ namespace SecuDev.Controllers
 
             foreach (DataRow b in ds.Tables[0].Rows)
             {
-                list.Add(b.ToObject<Board>());
+                Board tb = b.ToObject<Board>();
+                Users tu = b.ToObject<Users>();
+                Category tc = b.ToObject<Category>();
+
+                tb.Users = tu;
+                tb.Category = tc;
+
+                list.Add(tb);
             }
 
             ViewBag.list = list;
@@ -179,8 +186,7 @@ namespace SecuDev.Controllers
 
             SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_WRITE", param);
 
-            DataSet ds = result.DataSet;
-
+            Rtn = result.ReturnValue;
 
             return Rtn;
 

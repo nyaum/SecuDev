@@ -1,5 +1,4 @@
-﻿using FrameWork.DB;
-using SecuDEV.Manager;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Data;
