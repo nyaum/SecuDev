@@ -94,14 +94,23 @@ namespace SecuDev.Controllers
 
             }
 
-            return Json(new { Rtn });
+            return Json(new { dbFilePath, altFileName });
         }
 
         [HttpPost]
-        public ActionResult FileDelete() {
+        public ActionResult FileDelete(string dbFilePath)
+        {
 
             string sRtn = "Fail";
 
+            dbFilePath = crypto.Decrypt(dbFilePath);
+
+            if (System.IO.File.Exists($"{Server.MapPath("/")}/Upload/File/" + dbFilePath))
+            {
+
+                System.IO.File.Delete($"{Server.MapPath("/")}/Upload/File/" + dbFilePath);
+
+            }
 
             return Json(new { });
         }
