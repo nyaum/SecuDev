@@ -1,12 +1,20 @@
 ﻿@using SecuDev.Models;
 @using SecuDev.Helper;
 @using PagedList.Mvc;
+@model PagedList.IPagedList<SecuDev.Models.Board>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //string nowDate = Utility.GetNowDate();
-    List<Board> list = ViewBag.list;
+    string nowDate = Utility.GetNowDate();
+    //List<Board> list = ViewBag.list;
 
 }
+<script>
+    $().ready(function () {
+
+        $("#PageSize").val("@Model.PageSize").prop("selected", true);
+
+    })
+</script>
 <div>
 
     <div class="float-end pb-2">
@@ -28,7 +36,7 @@
         <tbody>
 
             @{
-                foreach (var b in list)
+                foreach (var b in Model)
                 {
 
                     <tr role="button" href="">
@@ -50,7 +58,9 @@
         </tbody>
 
     </table>
-
+    <div class="pt-3">
+        @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page, Model.PageSize }))
+    </div>
 </div>
 <div>
     <button role="button" class="btn btn-light shadow-sm float-end text-primary" href="/Board/Edit">
