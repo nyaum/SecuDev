@@ -169,11 +169,14 @@
         Content = editor.getHTML();
         Markdown = editor.getMarkdown();
 
+        const b64Content = Content;
+
         const formData = new FormData();
 
         formData.append("CID", CID);
         formData.append("Title", Title);
-        formData.append("Content", Content);
+        formData.append("Content", b64Content);
+
         for (var i = 0; i < FILELIST.length; i++) {
 
             formData.append("FilePath[" + i + "]", FILELIST[i]["uniqueFileId"] + "," + FILELIST[i]["FileName"]);

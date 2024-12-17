@@ -35,3 +35,39 @@
 
 })
 
+function decodeHTMLEntities(str) {
+    if (str !== undefined && str !== null && str !== '') {
+        str = String(str);
+
+        str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+        str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+        var element = document.createElement('div');
+        element.innerHTML = str;
+        str = element.textContent;
+        element.textContent = '';
+    }
+
+    return str;
+}
+
+function fnReadContent(str) {
+
+    if (str !== undefined && str !== null && str !== '') {
+
+        str = str.replaceAll("<br>", "\n");
+
+        str = str.replaceAll("&gt;", ">");
+
+        str = str.replaceAll("&lt;", "<");
+
+        str = str.replaceAll("&quot;", "");
+
+        str = str.replaceAll("&nbsp;", " ");
+
+        str = str.replaceAll("&amp;", "&");
+
+        return str;
+
+    }
+
+}

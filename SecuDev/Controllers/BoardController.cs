@@ -57,6 +57,81 @@ namespace SecuDev.Controllers
             return View();
         }
 
+        public ActionResult Read(int BID)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>
+            {
+                { "BID",BID }
+            };
+
+            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_READ", param);
+
+            DataSet ds = result.DataSet;
+
+            Board b = new Board();
+
+            b.Users.UserName = ds.Tables[0].Rows[0]["UserName"].ToString();
+            b.Category.CategoryName = ds.Tables[0].Rows[0]["CategoryName"].ToString();
+            b.Category.BackgroundColor = ds.Tables[0].Rows[0]["BackgroundColor"].ToString();
+            b.Category.FontColor = ds.Tables[0].Rows[0]["FontColor"].ToString();
+            b.BID = BID;
+            b.Title = ds.Tables[0].Rows[0]["Title"].ToString();
+            b.Content = ds.Tables[0].Rows[0]["Content"].ToString();
+            b.FileName = ds.Tables[0].Rows[0]["FileName"].ToString();
+            b.FilePath = ds.Tables[0].Rows[0]["FilePath"].ToString();
+            b.InsertDate = ds.Tables[0].Rows[0]["InsertDate"].ToString();
+
+            ViewBag.Read = b;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public int Write(Board b, string[] FilePath)
+        {
+            int Rtn = -1;
+
+            string dbFilePath = "";
+            string FileName = "";
+
+            if (FilePath != null)
+            {
+                for (int i = 0; i < FilePath.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        dbFilePath = FilePath[i].Split(',')[0];
+                        FileName = FilePath[i].Split(',')[1];
+                    }
+                    else
+                    {
+                        dbFilePath += "|" + FilePath[i].Split(',')[0];
+                        FileName += "|" + FilePath[i].Split(',')[1];
+                    }
+                }
+            }
+
+
+            Dictionary<string, object> param = new Dictionary<string, object>
+            {
+                { "CID", b.Category.CID },
+                { "UID", Session["UID"] },
+                { "Title", b.Title },
+                { "Content", b.Content },
+                { "FilePath", dbFilePath },
+                { "FileName", FileName },
+                { "IPAddress", Session["IPAddress"] }
+            };
+
+            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_WRITE", param);
+
+            Rtn = result.ReturnValue;
+
+            return Rtn;
+
+        }
+
         [HttpPost]
         public ActionResult FileUpload(IEnumerable<HttpPostedFileBase> file)
         {
@@ -147,50 +222,14 @@ namespace SecuDev.Controllers
             return Json(new { });
         }
 
-        [HttpPost]
-        [ValidateInput(false)]
-        public int Write(Board b, string[] FilePath)
+        public FileResult Download(string uniqueFileId, string FileName)
         {
-            int Rtn = -1;
+            string FilePath = $"{Server.MapPath("/")}/Upload/File/" + crypto.Decrypt(uniqueFileId);
 
-            string dbFilePath = "";
-            string FileName = "";
+            byte[] bytes = System.IO.File.ReadAllBytes(FilePath);
 
-            if (FilePath != null)
-            {
-                for (int i = 0; i < FilePath.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        dbFilePath = FilePath[i].Split(',')[0];
-                        FileName = FilePath[i].Split(',')[1];
-                    }
-                    else
-                    {
-                        dbFilePath += "|" + FilePath[i].Split(',')[0];
-                        FileName += "|" + FilePath[i].Split(',')[1];
-                    }
-                }
-            }
-
-            Dictionary<string, object> param = new Dictionary<string, object>
-            {
-                { "CID", b.Category.CID },
-                { "UID", Session["UID"] },
-                { "Title", b.Title },
-                { "Content", b.Content },
-                { "FilePath", dbFilePath },
-                { "FileName", FileName },
-                { "IPAddress", Session["IPAddress"] }
-            };
-
-            SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_WRITE", param);
-
-            Rtn = result.ReturnValue;
-
-            return Rtn;
+            return File(bytes, "application/octet-stream", FileName);
 
         }
-
     }
 }
