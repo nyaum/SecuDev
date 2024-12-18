@@ -9,6 +9,8 @@
 }
 <script>
 
+    let ChkUnload = true;
+
     let FILELIST = [];
 
     let editor;
@@ -26,6 +28,12 @@
             maxFileSize: '50MB',
             labelMaxFileSizeExceeded: '파일 사이즈 오류',
             labelMaxFileSize: '최대 {filesize} 까지 업로드 가능합니다',
+            labelIdle: '파일을 드래그 앤 드랍하거나, <span class="filepond--label-action"> 폴더에서 찾기 </span>',
+            labelFileProcessingComplete: '업로드 완료',
+            labelFileProcessingAborted: '업로드 취소',
+            labelFileProcessing: '처리중...',
+            labelFileProcessingError: '오류가 발생했습니다',
+            labelFileProcessingRevertError: '오류가 발생했습니다'
         });
 
         FilePond.setOptions({
@@ -54,8 +62,6 @@
                             // 인코딩된 파일 정보 보내기
                             //FILELIST.push(request.responseText)
                             FILELIST.push(JSON.parse(request.responseText));
-
-                            console.log(JSON.parse(request.responseText))
 
                         } else {
 
@@ -93,8 +99,6 @@
                     if (index > -1) {
                         FILELIST.splice(index, 1)
                     }
-
-                    console.log(FILELIST)
 
                     error('oh my goodness');
 
@@ -151,6 +155,30 @@
             $("#category").attr("data-value", $(this).attr("data-value"))
 
         });
+
+
+        // 파일을 올리고 새로고침하거나, 페이지 나갈시에 작동 && 작성 완료 버튼 클릭시 작동 안되게
+        $(window).on("beforeunload", function () {
+
+            if (FILELIST.length > 0 && ChkUnload) {
+
+                FILELIST.forEach(function (elem) {
+
+                    const formData = new FormData();
+
+                    formData.append("uniqueFileId", elem["uniqueFileId"])
+
+                    const request = new XMLHttpRequest();
+                    request.open('POST', '/Board/FileDelete', true);
+
+                    request.send(formData);
+
+                });
+
+            }
+
+        })
+        
 
     })
 
@@ -213,7 +241,9 @@
 
                     // 이동할 페이지
 
-                    console.log(rtn);
+                    ChkUnload = false;
+
+                    location.href = "/Board/Read?BID=" + rtn;
 
                 }
                 else if (rtn == -1) {

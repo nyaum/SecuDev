@@ -133,6 +133,16 @@ namespace SecuDev.Controllers
         }
 
         [HttpPost]
+        public string Delete(int BID)
+        {
+            string Rtn = "Fail";
+
+
+
+            return Rtn;
+        }
+
+        [HttpPost]
         public ActionResult FileUpload(IEnumerable<HttpPostedFileBase> file)
         {
 

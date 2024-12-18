@@ -51,6 +51,29 @@
 
     })
 
+    function fnDelete() {
+
+        if( confirm("삭제하시겠습니까?") ) {
+
+            const Param = "BID=" + "@b.BID";
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Board/Delete",
+                data: Param,
+                success: function (data) {
+
+                    console.log(data);
+
+                }
+
+            })
+
+        }
+
+    }
+
 </script>
 
 <div>
@@ -67,7 +90,7 @@
             <i id="ellipsis" role="button" class="fa-solid fa-ellipsis float-end" data-bs-toggle="dropdown"></i>
             <ul class="dropdown-menu" style="--bs-dropdown-link-active-bg: none !important ">
                 <li>
-                    <a class="dropdown-item" href="#"><i class="fa-solid fa-trash-can pe-3"></i>삭제</a>
+                    <a class="dropdown-item" href="javascript:fnDelete()"><i class="fa-solid fa-trash-can pe-3"></i>삭제</a>
                 </li>
                 <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen-to-square pe-3"></i>수정</a></li>
             </ul>
