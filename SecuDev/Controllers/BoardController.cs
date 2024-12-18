@@ -133,11 +133,31 @@ namespace SecuDev.Controllers
         }
 
         [HttpPost]
-        public string Delete(int BID)
+        public int Delete(int BID)
         {
-            string Rtn = "Fail";
+            int Rtn = -1;
 
+            try
+            {
 
+                Dictionary<string, object> param = new Dictionary<string, object>
+                {
+                    { "UpdateUID", Session["UID"] },
+                    { "BID", BID },
+                    { "UpdateIP", Session["IPAddress"] },
+                };
+
+                SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_DELETE", param);
+
+                Rtn = result.ReturnValue;
+
+            } 
+            catch (Exception ex)
+            {
+
+                Rtn = -1;
+
+            }
 
             return Rtn;
         }

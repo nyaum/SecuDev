@@ -13,6 +13,7 @@ using FileIOHelper.Helpers;
 using CoreDAL.Configuration.Interface;
 using CoreDAL.Configuration;
 using CoreDAL.Configuration.Models;
+using System.Text;
 
 namespace SecuDev
 {
@@ -39,6 +40,23 @@ namespace SecuDev
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_EndRequest()
+        {
+            int ERRCode = Context.Response.StatusCode;
+            string ERRPage = String.Format("/Error?ERRCode={0}", ERRCode);
+
+
+            if (ERRCode == 404)
+            {
+                Response.Redirect(ERRPage);
+            }
+            else if (ERRCode == 500)
+            {
+                Response.Redirect(ERRPage);
+            }
+
         }
     }
 }

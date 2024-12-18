@@ -32,12 +32,12 @@
 
                 if (i == 0) {
 
-                    FileHtml = '<a class="link-dark pe-2" href="/Board/Download?FileName=' + FileName[i] + '&uniqueFileId=' + uniqueFileId[i] + '">' + FileName[i] + '</a>';
+                    FileHtml = '<a class="link-dark" href="/Board/Download?FileName=' + FileName[i] + '&uniqueFileId=' + uniqueFileId[i] + '">' + FileName[i] + '</a>';
 
                 }
                 else {
 
-                    FileHtml = '<a class="link-dark" href="/Board/Download?FileName=' + FileName[i] + '&uniqueFileId=' + uniqueFileId[i] + '">' + FileName[i] + '</a>';
+                    FileHtml = '<a class="link-dark ps-2" href="/Board/Download?FileName=' + FileName[i] + '&uniqueFileId=' + uniqueFileId[i] + '">' + FileName[i] + '</a>';
 
                 }
 
@@ -64,8 +64,16 @@
                 data: Param,
                 success: function (data) {
 
-                    console.log(data);
+                    if (data == 1) {
 
+                        location.href = "/Board";
+
+                    }
+                    else {
+
+                        alert("처리중 오류가 발생했습니다")
+
+                    }
                 }
 
             })
