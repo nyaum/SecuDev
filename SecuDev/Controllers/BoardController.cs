@@ -52,8 +52,34 @@ namespace SecuDev.Controllers
             return View(list.ToPagedList(PageNo, PageSize));
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(string PageType, int? BID)
         {
+
+            Board b = new Board();
+
+            if (PageType == "E")
+            {
+                Dictionary<string, object> param = new Dictionary<string, object>
+                {
+                    { "BID", BID }
+                };
+
+                SQLResult result = ConnDB.DAL.ExecuteProcedure(ConnDB, "PROC_BOARD_READ", param);
+
+                DataSet ds = result.DataSet;
+
+                b.Category.CID = Int32.Parse(ds.Tables[0].Rows[0]["CID"].ToString());
+                b.Category.CategoryName = ds.Tables[0].Rows[0]["CategoryName"].ToString();
+                b.Title = ds.Tables[0].Rows[0]["Title"].ToString();
+                b.Content = ds.Tables[0].Rows[0]["Content"].ToString();
+                b.FileName = ds.Tables[0].Rows[0]["FileName"].ToString();
+                b.FilePath = ds.Tables[0].Rows[0]["FilePath"].ToString();
+
+            }
+
+            ViewBag.PageType = PageType;
+            ViewBag.Board = b;
+
             return View();
         }
 

@@ -82,6 +82,12 @@
 
     }
 
+    function fnEdit() {
+
+        location.href = '/Board/Edit?PageType=E&BID=' + @b.BID
+
+    }
+
 </script>
 
 <div>
@@ -100,7 +106,7 @@
                 <li>
                     <a class="dropdown-item" href="javascript:fnDelete()"><i class="fa-solid fa-trash-can pe-3"></i>삭제</a>
                 </li>
-                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen-to-square pe-3"></i>수정</a></li>
+                <li><a class="dropdown-item" href="javascript:fnEdit()"><i class="fa-solid fa-pen-to-square pe-3"></i>수정</a></li>
             </ul>
 
         </div>

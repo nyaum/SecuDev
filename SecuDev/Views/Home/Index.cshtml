@@ -30,6 +30,8 @@
 
     <script>
 
+        history.replaceState({}, null, location.pathname);
+
         $(window).on('load', function () {
 
             if ("@ViewBag.alertType" == "Session") { fnToast("Session", 1) };

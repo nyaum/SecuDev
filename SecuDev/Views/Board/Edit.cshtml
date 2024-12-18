@@ -5,6 +5,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     //string nowDate = Utility.GetNowDate();
+    var PageType = ViewBag.PageType;
+    Board b = ViewBag.Board;
 
 }
 <script>
@@ -15,15 +17,96 @@
 
     let editor;
 
+    let content = fnReadContent(`@b.Content`);
+
     $().ready(function () {
+
+        // Set plugins && opt
+        fnCreateFilePond();
+
+        // 에디터 생성
+        fnCreateEditor();
+
+        // 카테고리 선택
+        $(".dropdown-toggle[changeable=true]").next(".dropdown-menu").children().on("click", function () {
+
+            $("#category").text($(this).text())
+            $("#category").attr("data-value", $(this).attr("data-value"))
+
+        });
+
+
+        // 파일을 올리고 새로고침하거나, 페이지 나갈시에 작동 && 작성 완료 버튼 클릭시 작동 안되게
+        //$(window).on("beforeunload", function () {
+
+        //    if (FILELIST.length > 0 && ChkUnload) {
+
+        //        FILELIST.forEach(function (elem) {
+
+        //            const formData = new FormData();
+
+        //            formData.append("uniqueFileId", elem["uniqueFileId"])
+
+        //            const request = new XMLHttpRequest();
+        //            request.open('POST', '/Board/FileDelete', true);
+
+        //            request.send(formData);
+
+        //        });
+
+        //    }
+
+        //})
+
+        if ("@PageType" == "E") {
+
+            var FILEPOND_SOURCE = [];
+
+            $("#category").attr("data-value", @b.Category.CID)
+            $("#category").text("@b.Category.CategoryName")
+            $("#title").val("@b.Title")
+
+            var FileName = "@b.FileName".split("|")
+            var uniqueFileId = "@b.FilePath".split("|")
+
+            FileName.forEach(function (elem, index) {
+
+                var json = {
+                    FileName: FileName[index],
+                    uniqueFileId: uniqueFileId[index]
+                }
+
+                var filepond_json = {
+                    source: String.format("{\"uniqueFileId\":\"{0}\",\"FileName\":\"{1}\",\"PageType\":\"{1}\"}", uniqueFileId[index], FileName[index], "E"),
+                    options: {
+                        type: 'limbo',
+                        file: {
+                            name: FileName[index]
+                        }
+                    }
+                }
+
+                FILELIST.push(json);
+                FILEPOND_SOURCE.push(filepond_json)
+
+            })
+
+            file = FILEPOND_SOURCE;
+
+            fnCreateFilePond(file);
+
+        }
+
+    })
+
+    function fnCreateFilePond(file) {
 
         FilePond.registerPlugin(FilePondPluginFileValidateSize);
 
         // Turn input element into a pond
         $('#fileUpload').filepond();
 
-        // Set plugins && opt
-        $('#fileUpload').filepond({
+        var opt = {
             allowMultiple: true,
             maxFileSize: '50MB',
             labelMaxFileSizeExceeded: '파일 사이즈 오류',
@@ -33,10 +116,8 @@
             labelFileProcessingAborted: '업로드 취소',
             labelFileProcessing: '처리중...',
             labelFileProcessingError: '오류가 발생했습니다',
-            labelFileProcessingRevertError: '오류가 발생했습니다'
-        });
-
-        FilePond.setOptions({
+            labelFileProcessingRevertError: '오류가 발생했습니다',
+            files: file,
             server: {
                 process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
 
@@ -94,40 +175,32 @@
 
                     request.send(formData);
 
-                    const index = FILELIST.indexOf(uniqueFileId);
+                    // JsonArray에 있는 uniqueFileId 찾아서 제거
+                    FILELIST.find(function (element, index) {
 
-                    if (index > -1) {
-                        FILELIST.splice(index, 1)
-                    }
+                        if (element.uniqueFileId === parse["uniqueFileId"]) {
 
-                    error('oh my goodness');
+                            FILELIST.splice(index, 1)
+
+                        }
+
+                        return true;
+                    })
 
                     load();
 
                 },
             },
-        });
+        }
 
-        editor = new toastui.Editor({
-            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
-            height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
-            initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-            previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
-            language: 'ko',                          // 언어 설정
-            hideModeSwitch: true,
-            toolbarItems: [
-                ['heading', 'bold', 'italic', 'strike'],
-                ['hr', 'quote'],
-                ['ul', 'ol', 'task', 'indent', 'outdent'],
-                ['table', 'image', 'link',
-                    {
-                        el: btnUpload(),
-                        tooltip: '업로드'
-                    }
-                ],
-            ]
-        });
+        $('#fileUpload').filepond(opt)
 
+    }
+
+    // 에디터 생성
+    function fnCreateEditor(PageType) {
+
+        // 에디터 업로드 버튼 생성
         function btnUpload() {
 
             const button = document.createElement('button');
@@ -147,40 +220,29 @@
 
         }
 
-
-        // 카테고리 선택 
-        $(".dropdown-toggle[changeable=true]").next(".dropdown-menu").children().on("click", function () {
-
-            $("#category").text($(this).text())
-            $("#category").attr("data-value", $(this).attr("data-value"))
-
+        editor = new toastui.Editor({
+            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)
+            height: '100%',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+            initialEditType: 'wysiwyg',             // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+            previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
+            language: 'ko',                          // 언어 설정
+            hideModeSwitch: true,
+            initialValue: content,                 // 최초로 보여줄 에디터 기본 내용
+            toolbarItems: [
+                ['heading', 'bold', 'italic', 'strike'],
+                ['hr', 'quote'],
+                ['ul', 'ol', 'task', 'indent', 'outdent'],
+                ['table', 'image', 'link',
+                    {
+                        el: btnUpload(),
+                        tooltip: '업로드'
+                    }
+                ],
+            ]
         });
 
+    }
 
-        // 파일을 올리고 새로고침하거나, 페이지 나갈시에 작동 && 작성 완료 버튼 클릭시 작동 안되게
-        $(window).on("beforeunload", function () {
-
-            if (FILELIST.length > 0 && ChkUnload) {
-
-                FILELIST.forEach(function (elem) {
-
-                    const formData = new FormData();
-
-                    formData.append("uniqueFileId", elem["uniqueFileId"])
-
-                    const request = new XMLHttpRequest();
-                    request.open('POST', '/Board/FileDelete', true);
-
-                    request.send(formData);
-
-                });
-
-            }
-
-        })
-        
-
-    })
 
 
     // 글 작성
